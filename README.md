@@ -1,4 +1,4 @@
-# FEUP BDAD
+# FEUP CAL
 
 This repository contains the project completed in Conceção e Análise de Algoritmos, a **2nd year course** in the **Integrated Master's Degree in Informatics and Computing Engineering** @ **FEUP**
 
@@ -11,11 +11,6 @@ This repository contains the project completed in Conceção e Análise de Algor
 ### Second Delivery
 
  * Nothing yet
-
-### Third Delivery
-
- * [Third Report]()
- * [Third UML Diagram]()
 
 ## Course Information
 
