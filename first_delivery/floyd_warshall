@@ -3,7 +3,7 @@ let next be a |V| x |V| array of vertices indexes initialized to null
 
 FloydWarshallWithPathReconstruction()
     for each edge(u, v) do
-        dist[u][v] ← w(u, v)    // weight of the edge(u, v)
+        dist[u][v] ← d(u, v)    // weight of the edge(u, v)
         next[u][v] ← v
 
     for k = 1 to |V| do         // Floyd Warshall
