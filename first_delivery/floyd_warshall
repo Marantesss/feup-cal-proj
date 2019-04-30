@@ -1,0 +1,25 @@
+let dist be a |V| x |V| array of minimum distances initialized to infinite
+let next be a |V| x |V| array of vertices indexes initialized to null
+
+FloydWarshallWithPathReconstruction()
+    for each edge(u, v) do
+        dist[u][v] ← w(u, v)    // weight of the edge(u, v)
+        next[u][v] ← v
+
+    for k = 1 to |V| do         // Floyd Warshall
+        for i = i to |V| do
+            for j = 1 to |V| do
+                if dist[i][j] > dist[i][k] + dist[k][j] then
+                    dist[i][j] ← dist[i][k] + dist[k][j]
+                    next[i][j] ← next[i][k]
+
+GetPath(u, v)
+    if next[u][v] ← null then
+        return
+
+    path = [u]
+    while u != v do
+        u ← next[u][v]
+        path.append(u)
+    
+    return path
