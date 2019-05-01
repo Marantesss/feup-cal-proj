@@ -1,0 +1,44 @@
+// G - Graph, Ni - initial node
+// Nf - final node, containers - set of containers (interest points)
+
+TravellingSalesmanProblem(G, Ni, Nf, containers)
+    visitOrder = {}
+    calcVisitOrder(G, Ni, Nf, containers, visitOrder)
+
+    // Check if visitOrder contains all containers
+    if isComplete(visitOrder) then
+        return buildPath(visitOrder, G)
+    else
+        return null
+
+calcVisitOrder(G, Ni, Nf, containers, visitOrder)
+    visitOrder.insert(Ni)
+
+    // Check if it is possible to build a path from the given nodes
+    if canAccess(Ni, containers) and canAccess(Ni, Nf) then
+        nextVisit = findNearestContainer(Ni, containers, G)
+        containers.remove(Ni)
+        calcVisitOrder(G, nextVisit, Vf, containers, visitOrder)
+
+        // check if the recursive call was successful
+        if isComplete(visitOrder) then
+            return
+        else
+            // unwanted Node, backtrack
+            visitOrder.remove(Ni)
+            return
+    
+    else
+        // unwanted Node, backtrack
+        visitOrder.remove(Ni)
+        return
+
+buildPath(visitOrder, G)
+    finalPath = {}
+    // find the shortest path from N0 to N1, N1 to N2, ..., Nn-1 to Nn
+    for each Node in  visitOrder do
+        // bestPath can be Dijkstra Algorithm
+        finalPath.append(bestPath(Node, nextNode))
+
+    return finalPath
+

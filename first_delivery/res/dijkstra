@@ -1,0 +1,42 @@
+Dijkstra(G, Ni, Nf)
+    nodeQueue = {}  // priority node queue
+
+    // populate nodeQueue
+    for each Node n : G do
+        if equals(n, Ni) then // initial node has a total shortest path edge weight of 0
+            distance(n) = 0
+        else
+            distance(n) = infinite
+        path(n) = null
+        nodeQueue.insert(n)
+
+    // Perform Search
+    while notEmpty(nodeQueue) do
+        n = nodeQueue.pop() // extract minimum (greedy)
+
+        // Check for finish node
+        if equals(n, Nf) then
+            return buildPath(G, Ni, Nf)
+
+        // check all adjacent nodes
+        for each w : adjacent(n) do
+            if distance(w) > distance(n) + weight(n, w) then
+                distance(w) = distance(n) + weight(n, w)
+                path(w) = n
+                updateNodeQueue(nodeQueue, w)
+
+    // loop ended with no solution found
+    return null
+
+
+buildPath(G, Ni, Nf)
+    sortestPath = {}   // Node set that contains the nodes in shortest path order
+    w = Nf      // distance(Nf) contains the total shortest path weight
+
+    while w != Ni do
+        shortestPath.pushFront(w)
+        w = path(w)
+
+    shortestPath.pushFront(Ni)
+
+    return shortestPath
