@@ -1,0 +1,12 @@
+NearestNeighbour(Node V)
+    queue nodesSorted   // the remaining nodes sorted by distance relative to V
+    result = []
+    Vt ← V              // copy set of nodes into a temporary container
+    
+    while |Vt| > 0 do
+        nodesSorted.resortRelativeTo(N)
+        result.append(N)
+        N ← result[0]
+        nodesSorted.removeTop()
+    
+    return result
