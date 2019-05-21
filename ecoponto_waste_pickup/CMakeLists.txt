@@ -60,4 +60,5 @@ add_executable(ecoponto_waste_pickup
         src/GraphViewer/graphviewer.h
         src/GraphViewerController.jar
         src/Graph/edge.cpp src/Graph/edge.h
-        src/Graph/Node.cpp src/Graph/Node.h)
+        src/Graph/Node.cpp src/Graph/Node.h
+        src/Utils/MapParser.cpp src/Utils/MapParser.h)
