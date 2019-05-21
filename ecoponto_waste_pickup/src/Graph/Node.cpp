@@ -1,5 +1,25 @@
 #include "Node.h"
 
+
+//constructors
+Node::Node() {
+    this->id = 0;
+    this->latitude = 0;
+    this->longitude = 0;
+}
+
+Node::Node(unsigned int id) : id(id) {
+
+    this->latitude = 0;
+    this->longitude = 0;
+}
+
+Node::Node(double latitude, double longitude, unsigned int id, const string &name) : latitude(latitude),
+                                                                                     longitude(longitude), id(id),
+                                                                                     name(name) {}
+
+
+//getters and setters
 double Node::getLatitude() const {
     return latitude;
 }
@@ -32,12 +52,17 @@ void Node::setName(const string &name) {
     Node::name = name;
 }
 
-Node::Node() {}
+const vector<Edge> &Node::getEdges() const {
+    return edges;
+}
 
-Node::Node(unsigned int id) : id(id) {}
+void Node::setEdges(const vector<Edge> &edges) {
+    Node::edges = edges;
+}
 
-Node::Node(double latitude, double longitude, unsigned int id, const string &name) : latitude(latitude),
-                                                                                     longitude(longitude), id(id),
-                                                                                     name(name) {}
+double Node::getDistance(const Node otherNode) {
+    return sqrt(pow(this->getLatitude() - otherNode.getLatitude(), 2) +
+                pow(this->getLongitude() - this->getLongitude(), 2));
+}
 
 
