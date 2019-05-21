@@ -1,13 +1,6 @@
-#include <iomanip>
 #include "MapParser.h"
 
 using namespace std;
-
-void parseNodes(std::ifstream & fileEdges);
-
-void parseTags(std::ifstream & fileTags);
-
-void parseEdges(std::ifstream & fileEdges);
 
 void parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags) {
     //Graph returnGraph = Graph();
