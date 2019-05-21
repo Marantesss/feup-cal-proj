@@ -1,5 +1,5 @@
 #include <cstdio>
-#include "graphviewer.h"
+#include "GraphViewer/graphviewer.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>

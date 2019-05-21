@@ -1,6 +1,6 @@
 #include "graphviewer.h"
 #include <string>
-#include<sstream>
+#include <sstream>
 
 #ifdef linux
 pid_t GraphViewer::procId = NULL;
@@ -20,7 +20,7 @@ void GraphViewer::initialize(int width, int height, bool dynamic, int port_n) {
   this->width = width;
   this->height = height;
   this->isDynamic = dynamic;
-  string command = "java -jar ../GraphViewerController.jar";
+  string command = "java -jar src/GraphViewerController.jar";
   std::stringstream ss;
   ss << port_n;
   string port_string = ss.str();
