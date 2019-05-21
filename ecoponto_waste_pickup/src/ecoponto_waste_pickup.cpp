@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "Utils/MapParser.h"
 
 
 using namespace std;
@@ -11,6 +12,11 @@ int main() {
 	cout << "EcoPonto - Selective Waste Pickup!!!" << endl;
 	cout << "Under Construction!!!" << endl;
 
+    std::cout << "Current path is " << current_path() << '\n';
+
+    parseMap("../maps/Porto/T02_nodes_lat_lon_Porto.txt", "../maps/Porto/T02_edgesPorto.txt", "../maps/Porto/T02_tags_Porto.txt");
+
+	/*
 	GraphViewer *gv = new GraphViewer(600, 600, true);
 	gv->createWindow(600, 600);
 	gv->defineVertexColor("blue");
@@ -24,6 +30,7 @@ int main() {
 	// para arestas direccionais
 	gv->addEdge(2,1,3, EdgeType::DIRECTED);
 	gv->setVertexLabel(1, "Isto e um no");
+	 */
 
 	return 0;
 }
