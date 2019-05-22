@@ -5,13 +5,17 @@
 #include <fstream>
 #include <string>
 #include <iomanip>
+#include "Graph/Graph.h"
+#include "defs.h"
 
-void parseNodes(std::ifstream & fileEdges);
+Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
 
-void parseTags(std::ifstream & fileTags);
+void parseNodes(std::ifstream & fileEdges, Graph &graph);
 
-void parseEdges(std::ifstream & fileEdges);
+void parseEdges(std::ifstream & fileEdges, Graph &graph);
 
-void parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
+void parseTags(std::ifstream & fileTags, Graph &graph);
+
+nodeType getNodeType(std::string tag);
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H

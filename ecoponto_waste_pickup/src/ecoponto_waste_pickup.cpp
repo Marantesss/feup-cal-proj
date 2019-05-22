@@ -4,14 +4,14 @@
 #include <iostream>
 #include <sstream>
 #include "Utils/MapParser.h"
+#include "Graph/Graph.h"
 
 using namespace std;
 
 int main() {
 
-    //std::cout << "Current path is " << current_path() << '\n';
-
-    parseMap("../maps/Porto/T02_nodes_lat_lon_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
+    Graph graph = Graph();
+    graph = parseMap("../maps/Porto/T02_nodes_lat_lon_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
 
 	/*
 	GraphViewer *gv = new GraphViewer(600, 600, true);
