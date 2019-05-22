@@ -35,5 +35,6 @@ public:
     bool operator!=(const DijNode& d2) const;
 };
 
+// TODO Dijsktra Node hashtable
 
 #endif //ECOPONTO_WASTE_PICKUP_DIJNODE_H
