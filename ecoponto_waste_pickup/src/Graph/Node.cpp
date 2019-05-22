@@ -1,7 +1,5 @@
 #include "Node.h"
 
-
-//constructors
 Node::Node() {
     this->id = 0;
     this->latitude = 0;
@@ -10,7 +8,6 @@ Node::Node() {
 }
 
 Node::Node(unsigned int id) : id(id) {
-
     this->latitude = 0;
     this->longitude = 0;
     this->type = REGULAR;
@@ -99,6 +96,14 @@ bool Node::addNodeConnection(unsigned int destNodeId , const double & weight) {
 double Node::getDistanceToNode(const Node otherNode) {
     return sqrt(pow(this->getLatitude() - otherNode.getLatitude(), 2) +
                 pow(this->getLongitude() - this->getLongitude(), 2));
+}
+
+bool Node::isDeadEnd() const {
+    return edges.empty();
+}
+
+unsigned int Node::getNumEdges() {
+    return edges.size();
 }
 
 

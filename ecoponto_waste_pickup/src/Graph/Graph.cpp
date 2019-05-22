@@ -50,6 +50,16 @@ bool Graph::addEdge(unsigned int nodeId1, unsigned int nodeId2, const double &we
     return nodes.at(node1index).addNodeConnection(node2index, weight);
 }
 
-vector<Edge> Graph::getEdges(unsigned int Id) {
-    return nodes.at(getNodeIndex(Id)).getEdges();
+vector<Edge> Graph::getEdges(unsigned int id) {
+    return nodes.at(getNodeIndex(id)).getEdges();
+}
+
+unsigned int Graph::getNumEdges() {
+    unsigned int numEdges = 0;
+
+    for (Node n : nodes){
+        numEdges += n.getNumEdges();
+    }
+
+    return numEdges;
 }
