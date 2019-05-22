@@ -25,7 +25,7 @@ Node &Graph::getNode(unsigned int id) {
     return nodes.at(getNodeIndex(id));
 }
 
-Node Graph::getNodeByIndex(int index) {
+Node Graph::getNodeByIndex(int index) const {
     return nodes.at(index);
 }
 
