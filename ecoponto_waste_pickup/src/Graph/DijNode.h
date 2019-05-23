@@ -3,6 +3,7 @@
 
 #include <climits>
 #include <cfloat>
+#include <unordered_set>
 #include "Node.h"
 
 class DijNode: public Node {
@@ -35,6 +36,16 @@ public:
     bool operator!=(const DijNode& d2) const;
 };
 
-// TODO Dijsktra Node hashtable
+struct DNodeHash {
+    bool operator()(const DijNode &d1, const DijNode &d2) const {
+        return d1 == d2;
+    }
+
+    int operator()(const DijNode &d) const {
+        return d.getId();
+    }
+};
+
+typedef unordered_set<DijNode, DNodeHash, DNodeHash> DijNodeHashTable;
 
 #endif //ECOPONTO_WASTE_PICKUP_DIJNODE_H
