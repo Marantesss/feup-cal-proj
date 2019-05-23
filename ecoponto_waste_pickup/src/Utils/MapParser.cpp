@@ -2,8 +2,8 @@
 
 using namespace std;
 
-void parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags) {
-    //Graph returnGraph = Graph();
+Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags) {
+    Graph returnGraph = Graph();
 
     // ---- git Opening files
     std::ifstream fileNodes(file_path_nodes);
@@ -12,33 +12,31 @@ void parseMap(std::string file_path_nodes, std::string file_path_edges, std::str
 
     if(!fileNodes.is_open()) {
         cout << "ERROR: opening file in " << file_path_nodes << endl;
-        return;
+        exit(EXIT_FAILURE);
     } else if (!fileEdges.is_open()) {
         cout << "ERROR: opening file in " << file_path_edges << endl;
-        return;
+        exit(EXIT_FAILURE);
     } else if (!fileTags.is_open()) {
         cout << "ERROR: opening file in " << file_path_tags << endl;
-        return;
+        exit(EXIT_FAILURE);
     }
 
     // ---- parsing nodes
-    parseNodes(fileNodes);
+    parseNodes(fileNodes, returnGraph);
     fileNodes.close();
 
     // ---- parsing edges
-    parseEdges(fileEdges);
+    parseEdges(fileEdges, returnGraph);
     fileEdges.close();
 
-
     // ---- parsing tags
-    parseTags(fileTags);
+    parseTags(fileTags, returnGraph);
     fileTags.close();
 
-
-    //return returnGraph;
+    return returnGraph;
 }
 
-void parseNodes(std::ifstream & fileNodes) {
+void parseNodes(std::ifstream & fileNodes, Graph &graph) {
     std::string currLine = "";
     getline(fileNodes, currLine);
 
@@ -48,7 +46,7 @@ void parseNodes(std::ifstream & fileNodes) {
         getline(fileNodes, currLine);
 
         // ---- OSM node id
-        u_long nodeID = stoul(currLine.substr(1, currLine.find_first_of(",")));
+        unsigned int nodeId = stoul(currLine.substr(1, currLine.find_first_of(",")));
         currLine = currLine.substr(currLine.find_first_of(",") + 2);
         // ---- Latitude coordinate
         double node_lat = stod(currLine.substr(0, currLine.find_first_of(",")));
@@ -56,33 +54,33 @@ void parseNodes(std::ifstream & fileNodes) {
         // ---- longitude coordinate
         double node_long = stod(currLine.substr(0, currLine.find_first_of(")")));
 
-        std::string nodeName = "node" + std::to_string(nodeCounter);
+        std::string nodeName = "node " + std::to_string(nodeCounter);
 
-        //graph.addNode(nodeX, nodeY, nodeName);
-        cout << setprecision(10) << nodeCounter << " -> " << nodeID << " " << node_lat << " " << node_long << endl;
+        graph.addNode(nodeId, node_lat, node_long, nodeName);
 
         nodeCounter++;
     }
 }
 
-void parseEdges(std::ifstream & fileEdges) {
+void parseEdges(std::ifstream & fileEdges, Graph &graph) {
     std::string currLine = "";
     getline(fileEdges, currLine);
 
     while(!fileEdges.eof()) {
         getline(fileEdges, currLine);
         // ---- origin node
-        u_long originNodeID = stoul(currLine.substr(1, currLine.find_first_of(",")));
-        currLine = currLine.substr(currLine.find_first_of(",") + 2);
+        unsigned int originNodeID = stoul(currLine.substr(1, currLine.find_first_of(",")));
+        currLine = currLine.substr(currLine.find_first_of(",") + 1);
         // ---- destination node
-        u_long destNodeID = stoul(currLine.substr(1, currLine.find_first_of(")")));
+        unsigned int destNodeID = stoul(currLine.substr(1, currLine.find_first_of(")")));
 
-        //graph.addNode(nodeX, nodeY, nodeName);
-        cout << setprecision(10) << originNodeID << " -> " << destNodeID << endl;
+        double weight = graph.getNode(originNodeID).getDistanceToNode(graph.getNode(destNodeID));
+
+        graph.addEdge(originNodeID, destNodeID, weight);
     }
 }
 
-void parseTags(std::ifstream & fileTags) {
+void parseTags(std::ifstream & fileTags, Graph &graph) {
 
     std::string currLine = "";
     getline(fileTags, currLine);
@@ -90,16 +88,39 @@ void parseTags(std::ifstream & fileTags) {
     while(!fileTags.eof()) {
         // ---- getting type
         getline(fileTags, currLine);
-        std::string tag_type = currLine;
+        std::string tag = currLine;
+        nodeType type = getNodeType(currLine);
         // ---- getting number of tags of the same type
         getline(fileTags, currLine);
         int num_iter = stoi(currLine);
-        cout << tag_type << endl;
         // ---- getting tags
         for(int i = 0; i < num_iter; i++) {
             getline(fileTags, currLine);
-            u_long nodeID = stoi(currLine);
-            cout << nodeID << endl;
+            unsigned int nodeID = stoi(currLine);
+            graph.getNode(nodeID).setType(type);
         }
     }
+}
+
+nodeType getNodeType(std::string tag) {
+    if (tag == "amenity=waste_basket\r")
+        return WASTE_BASKET;
+    else if (tag == "amenity=recycling\r")
+        return RECYCLING_CONTAINER; // TODO recycling container or recycling centre are both valid
+    else if (tag == "amenity=waste_disposal\r")
+        return WASTE_DISPOSAL;
+    else if (tag == "bin=*\r")
+        return BIN;
+    else if (tag == "landuse=landfill\r")
+        return LANDFILL;
+    else if (tag == "recycling_type=container\r")
+        return RECYCLING_CONTAINER;
+    else if (tag == "recycling_type=centre\r")
+        return RECYCLING_CENTRE;
+    else if (tag == "amenity=waste_transfer_station\r")
+        return WASTE_TRANSFER_STATION;
+    else if (tag == "waste=*\r")
+        return WASTE_DISPOSAL; // TODO waste disposal or waste basket are both valid
+    else
+        return REGULAR;
 }

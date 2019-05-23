@@ -1,22 +1,36 @@
 #include "Node.h"
 
-
-//constructors
 Node::Node() {
     this->id = 0;
     this->latitude = 0;
     this->longitude = 0;
+    this->type = REGULAR;
 }
 
 Node::Node(unsigned int id) : id(id) {
-
     this->latitude = 0;
     this->longitude = 0;
+    this->type = REGULAR;
 }
 
-Node::Node(double latitude, double longitude, unsigned int id, const string &name) : latitude(latitude),
-                                                                                     longitude(longitude), id(id),
-                                                                                     name(name) {}
+Node::Node(double latitude, double longitude, unsigned int id, const string &name) :
+    latitude(latitude),
+    longitude(longitude),
+    id(id),
+    name(name),
+    type(REGULAR) {}
+
+int Node::getConnectionIndex(unsigned int destNodeId) const {
+    // Checks if destNodeId is already connected to this node
+    for (int i = 0; i < edges.size(); i++) {
+        if (edges.at(i).destNodeId == destNodeId) {
+            return i;
+        }
+    }
+
+    // destNodeId is not connected to this node
+    return -1;
+}
 
 
 //getters and setters
@@ -52,6 +66,14 @@ void Node::setName(const string &name) {
     Node::name = name;
 }
 
+const nodeType Node::getType() const {
+    return type;
+}
+
+void Node::setType(const nodeType type) {
+    Node::type = type;
+}
+
 const vector<Edge> &Node::getEdges() const {
     return edges;
 }
@@ -60,9 +82,28 @@ void Node::setEdges(const vector<Edge> &edges) {
     Node::edges = edges;
 }
 
-double Node::getDistance(const Node otherNode) {
+bool Node::addNodeConnection(unsigned int destNodeId , const double & weight) {
+    // if destNodeId already is connected to this node, we cant add it again
+    if (getConnectionIndex(destNodeId) != -1){
+        return false;
+    }
+
+    // Add the new node connection
+    edges.push_back( Edge(destNodeId, weight) );
+    return true;
+}
+
+double Node::getDistanceToNode(const Node otherNode) {
     return sqrt(pow(this->getLatitude() - otherNode.getLatitude(), 2) +
                 pow(this->getLongitude() - this->getLongitude(), 2));
+}
+
+bool Node::isDeadEnd() const {
+    return edges.empty();
+}
+
+unsigned int Node::getNumEdges() {
+    return edges.size();
 }
 
 
