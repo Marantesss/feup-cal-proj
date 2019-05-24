@@ -34,41 +34,69 @@ int main() {
 
         if (n.getLatitude() > maxX) {
             maxX = n.getLatitude();
-        }
-        else if (n.getLatitude() < minX) {
+        } else if (n.getLatitude() < minX) {
             minX = n.getLatitude();
         }
 
         if (n.getLongitude() > maxY) {
             maxY = n.getLongitude();
-        }
-        else if (n.getLongitude() < minY) {
+        } else if (n.getLongitude() < minY) {
             minY = n.getLongitude();
         }
     }
 
+
     double graphHeight = maxY - minY;
     double graphWidth = maxX - minX;
 
-    for(size_t i = 0; i < graph.getNumNodes(); i++) {
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
 
         n.setLatitude(n.getLatitude() - minX);
         n.setLongitude(n.getLongitude() - minY);
 
-        yPercent = 1.0 - ((n.getLongitude())/graphHeight*0.9 + 0.05); //+5% to have margins
-        xPercent = (n.getLatitude())/graphWidth*0.9 + 0.05; // *90% to be within margins
+        yPercent = 1.0 - ((n.getLongitude()) / graphHeight);
+        xPercent = (n.getLatitude()) / graphWidth;
 
-        gv->addNode(i, (int)(xPercent*4000), (int)(yPercent*2000));
+        gv->addNode(i, (int) (xPercent * 4000), (int) (yPercent * 2000));
 
-        if (i == 9830) cout << n.getId() << endl;
+        switch (n.getType()) {
+            case WASTE_DISPOSAL:
+                gv->setVertexColor(i, "yellow");
+                gv->setVertexLabel(i, "Waste Disposal");
+                break;
+            case WASTE_TRANSFER_STATION:
+                gv->setVertexColor(i, "orange");
+                gv->setVertexLabel(i, "Waste Transfer Station");
+                break;
+            case LANDFILL:
+                gv->setVertexColor(i, "red");
+                gv->setVertexLabel(i, "Landfill");
+                break;
+            case RECYCLING_CONTAINER:
+                gv->setVertexColor(i, "green");
+                gv->setVertexLabel(i, "Recycling Container");
+                break;
+            case RECYCLING_CENTRE:
+                gv->setVertexColor(i, "white");
+                gv->setVertexLabel(i, "Recycling Centre");
+                break;
+            case WASTE_BASKET:
+                gv->setVertexColor(i, "black");
+                gv->setVertexLabel(i, "Waste Disposal");
+                break;
+            case BIN:
+                gv->setVertexColor(i, "cyan");
+                gv->setVertexLabel(i, "Bin");
+                break;
+        }
     }
 
 
-    int edgeId=0;
+    int edgeId = 0;
     vector<Edge> edges;
 
-    for(size_t i = 0; i < graph.getNumNodes(); i++) {
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
         edges = graph.getNodeByIndex(i).getEdges();
         for (Edge e : edges) {
             gv->removeEdge(edgeId);
@@ -80,4 +108,5 @@ int main() {
     gv->rearrange();
 
     return 0;
+
 }
