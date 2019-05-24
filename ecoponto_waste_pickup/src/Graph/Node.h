@@ -12,11 +12,9 @@ using namespace std;
 class Node {
 protected:
 
-    double latitude, longitude;
+    double x, y;
 
     unsigned int id;
-
-    string name;
 
     nodeType type;
 
@@ -27,7 +25,7 @@ protected:
 
 public:
     // ---- Constructors
-    Node(double latitude, double longitude, unsigned int id, const string &name);
+    Node(double x, double y, unsigned int id);
     Node(unsigned int id);
     Node();
 
@@ -36,16 +34,12 @@ public:
     void setId(unsigned int id);
 
     // ---- Latitude getter and setter
-    double getLatitude() const;
-    void setLatitude(double latitude);
+    double getX() const;
+    void setX(double latitude);
 
     // ---- Longitude getter and setter
-    double getLongitude() const;
-    void setLongitude(double longitude);
-
-    // ---- Name getter and setter
-    const string &getName() const;
-    void setName(const string &name);
+    double getY() const;
+    void setY(double longitude);
 
     // ---- Type getter and setter
     const nodeType getType() const;

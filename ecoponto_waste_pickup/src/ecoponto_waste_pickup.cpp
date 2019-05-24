@@ -23,25 +23,25 @@ int main() {
 
     Node n = graph.getNodeByIndex(0);
 
-    double minX = n.getLatitude();
-    double minY = n.getLongitude();
-    double maxX = n.getLatitude();
-    double maxY = n.getLongitude();
+    double minX = n.getX();
+    double minY = n.getY();
+    double maxX = n.getX();
+    double maxY = n.getY();
 
     for (size_t i = 1; i < graph.getNumNodes(); i++) {
 
         n = graph.getNodeByIndex(i);
 
-        if (n.getLatitude() > maxX) {
-            maxX = n.getLatitude();
-        } else if (n.getLatitude() < minX) {
-            minX = n.getLatitude();
+        if (n.getX() > maxX) {
+            maxX = n.getX();
+        } else if (n.getX() < minX) {
+            minX = n.getX();
         }
 
-        if (n.getLongitude() > maxY) {
-            maxY = n.getLongitude();
-        } else if (n.getLongitude() < minY) {
-            minY = n.getLongitude();
+        if (n.getY() > maxY) {
+            maxY = n.getY();
+        } else if (n.getY() < minY) {
+            minY = n.getY();
         }
     }
 
@@ -52,42 +52,42 @@ int main() {
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
 
-        n.setLatitude(n.getLatitude() - minX);
-        n.setLongitude(n.getLongitude() - minY);
+        n.setX(n.getX() - minX);
+        n.setY(n.getY() - minY);
 
-        yPercent = 1.0 - ((n.getLongitude()) / graphHeight);
-        xPercent = (n.getLatitude()) / graphWidth;
+        xPercent = (n.getX()) / graphWidth;
+        yPercent = 1.0 - ((n.getY()) / graphHeight);
 
-        gv->addNode(i, (int) (xPercent * 4000), (int) (yPercent * 2000));
+        gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
 
         switch (n.getType()) {
             case WASTE_DISPOSAL:
-                gv->setVertexColor(i, "yellow");
-                gv->setVertexLabel(i, "Waste Disposal");
+                gv->setVertexColor(n.getId(), "yellow");
+                gv->setVertexLabel(n.getId(), "Waste Disposal");
                 break;
             case WASTE_TRANSFER_STATION:
-                gv->setVertexColor(i, "orange");
-                gv->setVertexLabel(i, "Waste Transfer Station");
+                gv->setVertexColor(n.getId(), "orange");
+                gv->setVertexLabel(n.getId(), "Waste Transfer Station");
                 break;
             case LANDFILL:
-                gv->setVertexColor(i, "red");
-                gv->setVertexLabel(i, "Landfill");
+                gv->setVertexColor(n.getId(), "red");
+                gv->setVertexLabel(n.getId(), "Landfill");
                 break;
             case RECYCLING_CONTAINER:
-                gv->setVertexColor(i, "green");
-                gv->setVertexLabel(i, "Recycling Container");
+                gv->setVertexColor(n.getId(), "green");
+                gv->setVertexLabel(n.getId(), "Recycling Container");
                 break;
             case RECYCLING_CENTRE:
-                gv->setVertexColor(i, "white");
-                gv->setVertexLabel(i, "Recycling Centre");
+                gv->setVertexColor(n.getId(), "white");
+                gv->setVertexLabel(n.getId(), "Recycling Centre");
                 break;
             case WASTE_BASKET:
-                gv->setVertexColor(i, "black");
-                gv->setVertexLabel(i, "Waste Basket");
+                gv->setVertexColor(n.getId(), "black");
+                gv->setVertexLabel(n.getId(), "Waste Basket");
                 break;
             case BIN:
-                gv->setVertexColor(i, "cyan");
-                gv->setVertexLabel(i, "Bin");
+                gv->setVertexColor(n.getId(), "cyan");
+                gv->setVertexLabel(n.getId(), "Bin");
                 break;
         }
     }
@@ -97,10 +97,11 @@ int main() {
     vector<Edge> edges;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
-        edges = graph.getNodeByIndex(i).getEdges();
+        Node n = graph.getNodeByIndex(i);
+        edges = n.getEdges();
         for (Edge e : edges) {
             gv->removeEdge(edgeId);
-            gv->addEdge(edgeId, i, e.destNodeId, EdgeType::DIRECTED);
+            gv->addEdge(edgeId, n.getId(), e.destNodeId, EdgeType::DIRECTED);
             edgeId++;
         }
     }

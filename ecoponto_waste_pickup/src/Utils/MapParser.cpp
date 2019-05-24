@@ -49,14 +49,12 @@ void parseNodes(std::ifstream & fileNodes, Graph &graph) {
         unsigned int nodeId = stoul(currLine.substr(1, currLine.find_first_of(",")));
         currLine = currLine.substr(currLine.find_first_of(",") + 2);
         // ---- Latitude coordinate
-        double node_lat = stod(currLine.substr(0, currLine.find_first_of(",")));
+        double node_x = stod(currLine.substr(0, currLine.find_first_of(",")));
         currLine = currLine.substr(currLine.find_last_of(",") + 2);
         // ---- longitude coordinate
-        double node_long = stod(currLine.substr(0, currLine.find_first_of(")")));
+        double node_y = stod(currLine.substr(0, currLine.find_first_of(")")));
 
-        std::string nodeName = "node " + std::to_string(nodeCounter);
-
-        graph.addNode(nodeId, node_lat, node_long, nodeName);
+        graph.addNode(nodeId, node_x, node_y);
 
         nodeCounter++;
     }
@@ -74,9 +72,7 @@ void parseEdges(std::ifstream & fileEdges, Graph &graph) {
         // ---- destination node
         unsigned int destNodeID = stoul(currLine.substr(1, currLine.find_first_of(")")));
 
-        double weight = graph.getNode(originNodeID).getDistanceToNode(graph.getNode(destNodeID));
-
-        graph.addEdge(originNodeID, destNodeID, weight);
+        graph.addEdge(originNodeID, destNodeID);
     }
 }
 
@@ -106,7 +102,7 @@ nodeType getNodeType(std::string tag) {
     if (tag == "amenity=waste_basket\r")
         return WASTE_BASKET;
     else if (tag == "amenity=recycling\r")
-        return RECYCLING_CONTAINER; // TODO recycling container or recycling centre are both valid
+        return RECYCLING_CONTAINER;
     else if (tag == "amenity=waste_disposal\r")
         return WASTE_DISPOSAL;
     else if (tag == "bin=*\r")
@@ -120,7 +116,7 @@ nodeType getNodeType(std::string tag) {
     else if (tag == "amenity=waste_transfer_station\r")
         return WASTE_TRANSFER_STATION;
     else if (tag == "waste=*\r")
-        return WASTE_DISPOSAL; // TODO waste disposal or waste basket are both valid
+        return WASTE_DISPOSAL;
     else
         return REGULAR;
 }
