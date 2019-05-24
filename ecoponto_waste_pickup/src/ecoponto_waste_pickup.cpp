@@ -11,11 +11,11 @@ using namespace std;
 int main() {
 
     Graph graph = Graph();
-    graph = parseMap("../maps/Porto/T02_nodes_lat_lon_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
+    graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
 
 
-    GraphViewer *gv = new GraphViewer(1200, 1200, true);
-    gv->createWindow(1200, 1200);
+    GraphViewer *gv = new GraphViewer(900, 900, false);
+    gv->createWindow(900, 900);
     gv->defineVertexColor("blue");
     gv->defineEdgeColor("black");
 
@@ -28,7 +28,7 @@ int main() {
     double maxX = n.getLatitude();
     double maxY = n.getLongitude();
 
-    for(size_t i = 1; i < graph.getNumNodes(); i++){
+    for (size_t i = 1; i < graph.getNumNodes(); i++) {
 
         n = graph.getNodeByIndex(i);
 
@@ -53,11 +53,17 @@ int main() {
     for(size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
 
-        yPercent = 1.0 - ((n.getLongitude() - minY)/graphHeight*0.9 + 0.05); //+5% to have margins
-        xPercent = (n.getLatitude() - minX)/graphWidth*0.9 + 0.05; // *90% to be within margins
+        n.setLatitude(n.getLatitude() - minX);
+        n.setLongitude(n.getLongitude() - minY);
 
-        gv->addNode(i, (int)(xPercent*1200), (int)(yPercent*1200));
+        yPercent = 1.0 - ((n.getLongitude())/graphHeight*0.9 + 0.05); //+5% to have margins
+        xPercent = (n.getLatitude())/graphWidth*0.9 + 0.05; // *90% to be within margins
+
+        gv->addNode(i, (int)(xPercent*4000), (int)(yPercent*2000));
+
+        if (i == 9830) cout << n.getId() << endl;
     }
+
 
     int edgeId=0;
     vector<Edge> edges;
@@ -65,14 +71,13 @@ int main() {
     for(size_t i = 0; i < graph.getNumNodes(); i++) {
         edges = graph.getNodeByIndex(i).getEdges();
         for (Edge e : edges) {
-            gv->removeEdge(edgeId++);
-            gv->addEdge(edgeId++, i, graph.getNodeIndex(e.destNodeId), EdgeType::DIRECTED);
+            gv->removeEdge(edgeId);
+            gv->addEdge(edgeId, i, e.destNodeId, EdgeType::DIRECTED);
+            edgeId++;
         }
     }
 
     gv->rearrange();
-
-
 
     return 0;
 }

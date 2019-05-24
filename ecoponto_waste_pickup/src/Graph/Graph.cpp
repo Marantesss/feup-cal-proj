@@ -32,9 +32,6 @@ Node Graph::getNodeByIndex(int index) {
 // ---- Edges
 
 bool Graph::addEdge(unsigned int nodeId1, unsigned int nodeId2, const double &weight) {
-    if (nodeId1 == nodeId2) {
-        return false;
-    }
 
     int node1index = getNodeIndex(nodeId1);
     if (node1index == -1) {    // Node 1 not found
