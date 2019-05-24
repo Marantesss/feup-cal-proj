@@ -76,7 +76,7 @@ void parseEdges(std::ifstream & fileEdges, Graph &graph) {
 
         double weight = graph.getNode(originNodeID).getDistanceToNode(graph.getNode(destNodeID));
 
-        graph.addEdge(originNodeID, destNodeID, weight))
+        graph.addEdge(originNodeID, destNodeID, weight);
     }
 }
 

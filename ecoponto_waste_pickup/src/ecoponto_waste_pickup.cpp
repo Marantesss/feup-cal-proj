@@ -83,7 +83,7 @@ int main() {
                 break;
             case WASTE_BASKET:
                 gv->setVertexColor(i, "black");
-                gv->setVertexLabel(i, "Waste Disposal");
+                gv->setVertexLabel(i, "Waste Basket");
                 break;
             case BIN:
                 gv->setVertexColor(i, "cyan");
