@@ -15,8 +15,8 @@ public:
     // ---- Nodes
     unsigned int addNode(unsigned int id, double latitude, double longitude, string name);
     unsigned int getNumNodes();
-    unsigned int getNodeIndex(unsigned int id);
-    Node &getNode(unsigned int id); // we need to return the reference so we can set the node type when parsing
+    unsigned int getNodeIndex(unsigned int id) const;
+    Node & getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
     Node getNodeByIndex(int index);
 
     // ---- Edges

@@ -1,0 +1,10 @@
+#ifndef ECOPONTO_WASTE_PICKUP_ASTAR_H
+#define ECOPONTO_WASTE_PICKUP_ASTAR_H
+
+
+class AStar {
+
+};
+
+
+#endif //ECOPONTO_WASTE_PICKUP_ASTAR_H
