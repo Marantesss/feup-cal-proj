@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include <tgmath.h>
+#include <climits>
+#include <cfloat>
+#include <unordered_set>
 #include "Edge.h"
 #include "../Utils/defs.h"
 
@@ -21,7 +24,7 @@ protected:
     vector<Edge> edges;
 
     // Checks if destNodeId can be reached with the edges vector starting in this node
-    int getConnectionIndex(unsigned int destNodeId) const;
+    unsigned int getConnectionIndex(unsigned int destNodeId) const;
 
 public:
     // ---- Constructors
@@ -56,6 +59,24 @@ public:
 
     // ---- Cheks if node has no connections
     bool isDeadEnd() const;
+
+    // ---- Equality operator
+    bool operator==(const Node &d2) const;
+
+    // ---- Not equal Operator
+    bool operator!=(const Node &d2) const;
 };
+
+struct NodeHash {
+    bool operator()(const Node &d1, const Node &d2) const {
+        return d1 == d2;
+    }
+
+    unsigned int operator()(const Node &d) const {
+        return d.getId();
+    }
+};
+
+typedef unordered_set<Node, NodeHash, NodeHash> NodeHashTable;
 
 #endif //ECOPONTO_WASTE_PICKUP_NODE_H

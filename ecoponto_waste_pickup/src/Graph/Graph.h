@@ -14,9 +14,9 @@ public:
     Graph();
     // ---- Nodes
     unsigned int addNode(unsigned int id, double x, double y);
-    unsigned int getNumNodes();
-    unsigned int getNodeIndex(unsigned int id);
-    Node &getNode(unsigned int id); // we need to return the reference so we can set the node type when parsing
+    unsigned int getNumNodes() const;
+    unsigned int getNodeIndex(unsigned int id) const;
+    Node & getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
     Node getNodeByIndex(int index);
 
     // ---- Edges

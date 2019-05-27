@@ -19,9 +19,9 @@ Node::Node(double x, double y, unsigned int id) :
     id(id),
     type(REGULAR) {}
 
-int Node::getConnectionIndex(unsigned int destNodeId) const {
+unsigned int Node::getConnectionIndex(unsigned int destNodeId) const {
     // Checks if destNodeId is already connected to this node
-    for (int i = 0; i < edges.size(); i++) {
+    for (unsigned int i = 0; i < edges.size(); i++) {
         if (edges.at(i).destNodeId == destNodeId) {
             return i;
         }
@@ -97,4 +97,12 @@ unsigned int Node::getNumEdges() {
     return edges.size();
 }
 
+bool Node::operator==(const Node& d2) const{
+    return this->id == d2.id;
+}
+
+
+bool Node::operator!=(const Node& d2) const{
+    return !(this->id == d2.id);
+}
 
