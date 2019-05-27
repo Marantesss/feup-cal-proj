@@ -1,107 +1,11 @@
 #include <cstdio>
-#include "GraphViewer/graphviewer.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include "Utils/MapParser.h"
-#include "Graph/Graph.h"
 #include "UserInterface/UserInterface.h"
 
 using namespace std;
-
-GraphViewer* loadMap(Graph & graph) {
-
-    GraphViewer *gv = new GraphViewer(900, 900, false);
-    gv->createWindow(900, 900);
-    gv->defineVertexColor("blue");
-    gv->defineEdgeColor("black");
-
-    double yPercent, xPercent;
-
-    Node n = graph.getNodeByIndex(0);
-
-    double minX = n.getX();
-    double minY = n.getY();
-    double maxX = n.getX();
-    double maxY = n.getY();
-
-    for (size_t i = 1; i < graph.getNumNodes(); i++) {
-
-        n = graph.getNodeByIndex(i);
-
-        if (n.getX() > maxX) {
-            maxX = n.getX();
-        } else if (n.getX() < minX) {
-            minX = n.getX();
-        }
-
-        if (n.getY() > maxY) {
-            maxY = n.getY();
-        } else if (n.getY() < minY) {
-            minY = n.getY();
-        }
-    }
-
-
-    double graphHeight = maxY - minY;
-    double graphWidth = maxX - minX;
-
-    for (size_t i = 0; i < graph.getNumNodes(); i++) {
-        Node n = graph.getNodeByIndex(i);
-
-        n.setX(n.getX() - minX);
-        n.setY(n.getY() - minY);
-
-        xPercent = (n.getX()) / graphWidth;
-        yPercent = 1.0 - ((n.getY()) / graphHeight);
-
-        gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
-
-        if (n.getX() < (528028-minX))
-            gv->setVertexColor(n.getId(), "cyan");
-        else if (n.getX() > (533327-minX) && n.getY() > (4557202-minY))
-            gv->setVertexColor(n.getId(), "green");
-        else if (n.getX() > (529642-minX) && n.getY() < (4557222-minY) && n.getX() < (532548-minX) && n.getY() > (4555511-minY))
-            gv->setVertexColor(n.getId(), "red");
-
-        switch (n.getType()) {
-            case WASTE_DISPOSAL:
-                gv->setVertexColor(n.getId(), "orange");
-                //gv->setVertexLabel(n.getId(), "Waste Container");
-                break;
-            case LANDFILL:
-                gv->setVertexColor(n.getId(), "red");
-                //gv->setVertexLabel(n.getId(), "Landfill");
-                break;
-            case RECYCLING_CONTAINER:
-                gv->setVertexColor(n.getId(), "green");
-                //gv->setVertexLabel(n.getId(), "Recycling Container");
-                break;
-            case RECYCLING_CENTRE:
-                gv->setVertexColor(n.getId(), "yellow");
-                //gv->setVertexLabel(n.getId(), "Recycling Centre");
-                break;
-        }
-    }
-
-
-    int edgeId = 0;
-    vector<Edge> edges;
-
-    for (size_t i = 0; i < graph.getNumNodes(); i++) {
-        Node n = graph.getNodeByIndex(i);
-        edges = n.getEdges();
-        for (Edge e : edges) {
-            gv->removeEdge(edgeId);
-            gv->addEdge(edgeId, n.getId(), e.destNodeId, EdgeType::DIRECTED);
-            edgeId++;
-        }
-    }
-
-    gv->rearrange();
-
-    return gv;
-}
 
 int main() {
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
@@ -109,7 +13,16 @@ int main() {
 
     Graph graph = Graph();
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
-    GraphViewer* gv = loadMap(graph);
+    GraphViewer* gv = buildGraphViewer(graph);
+
+    vector<unsigned int> matosinhosWasteContainers = getMatosinhosWasteContainers(graph);
+    vector<unsigned int> matosinhosRecyclingContainers = getMatosinhosRecyclingContainers(graph);
+
+    vector<unsigned int> boavistaWasteContainers = getBoavistaWasteContainers(graph);
+    vector<unsigned int> boavistaRecyclingContainers = getBoavistaRecyclingContainers(graph);
+
+    vector<unsigned int> paranhosWasteContainers = getParanhosWasteContainers(graph);
+    vector<unsigned int> paranhosRecyclingContainers = getParanhosRecyclingContainers(graph);
 
     cout << endl << "Porto Map loaded!" << endl;
 
@@ -118,5 +31,4 @@ int main() {
     showStartingPointMenu();
 
     return 0;
-
 }
