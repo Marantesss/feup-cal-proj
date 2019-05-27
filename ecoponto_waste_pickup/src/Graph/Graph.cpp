@@ -3,7 +3,7 @@
 Graph::Graph() {}
 
 // ---- Nodes
-unsigned int Graph::getNumNodes() {
+unsigned int Graph::getNumNodes() const {
     return this->nodes.size();
 }
 
@@ -12,7 +12,7 @@ unsigned int Graph::addNode(unsigned int id, double latitude, double longitude, 
     nodes.push_back(Node(latitude, longitude, id, name));
 }
 
-unsigned int Graph::getNodeIndex(unsigned int id) {
+unsigned int Graph::getNodeIndex(unsigned int id) const {
     for (unsigned int i = 0; i < nodes.size(); i++) {
         if (nodes.at(i).getId() == id) {
             return i;
@@ -21,8 +21,8 @@ unsigned int Graph::getNodeIndex(unsigned int id) {
     return -1;
 }
 
-Node &Graph::getNode(unsigned int id) {
-    return nodes.at(getNodeIndex(id));
+Node & Graph::getNode(unsigned int id) const {
+    return const_cast<Node &>(nodes.at(getNodeIndex(id)));
 }
 
 Node Graph::getNodeByIndex(int index) {
@@ -32,9 +32,6 @@ Node Graph::getNodeByIndex(int index) {
 // ---- Edges
 
 bool Graph::addEdge(unsigned int nodeId1, unsigned int nodeId2, const double &weight) {
-    if (nodeId1 == nodeId2) {
-        return false;
-    }
 
     int node1index = getNodeIndex(nodeId1);
     if (node1index == -1) {    // Node 1 not found
