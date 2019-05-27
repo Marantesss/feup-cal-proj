@@ -68,4 +68,5 @@ add_executable(ecoponto_waste_pickup
         src/Algorithms/Dijkstra.cpp src/Algorithms/Dijkstra.h
         src/Algorithms/NearestNeighbour.cpp src/Algorithms/NearestNeighbour.h
         src/Algorithms/GraphSearchAlgorithm.cpp src/Algorithms/GraphSearchAlgorithm.h
-        src/Algorithms/DFS.cpp src/Algorithms/DFS.h)
+        src/Algorithms/DFS.cpp src/Algorithms/DFS.h
+        src/UserInterface/UserInterface.cpp src/UserInterface/UserInterface.h)

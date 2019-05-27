@@ -5,6 +5,7 @@
 #include <sstream>
 #include "Utils/MapParser.h"
 #include "Graph/Graph.h"
+#include "UserInterface/UserInterface.h"
 
 using namespace std;
 
@@ -56,35 +57,30 @@ GraphViewer* loadMap(Graph & graph) {
 
         gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
 
+        if (n.getX() < (528028-minX))
+            gv->setVertexColor(n.getId(), "cyan");
+        else if (n.getX() > (533327-minX) && n.getY() > (4557202-minY))
+            gv->setVertexColor(n.getId(), "green");
+        else if (n.getX() > (529642-minX) && n.getY() < (4557222-minY) && n.getX() < (532548-minX) && n.getY() > (4555511-minY))
+            gv->setVertexColor(n.getId(), "red");
+
         switch (n.getType()) {
             case WASTE_DISPOSAL:
                 gv->setVertexColor(n.getId(), "orange");
-                gv->setVertexLabel(n.getId(), "Waste Container");
+                //gv->setVertexLabel(n.getId(), "Waste Container");
                 break;
-                /*case WASTE_TRANSFER_STATION:
-                    gv->setVertexColor(n.getId(), "orange");
-                    gv->setVertexLabel(n.getId(), "Waste Transfer Station");
-                    break;*/
             case LANDFILL:
                 gv->setVertexColor(n.getId(), "red");
-                gv->setVertexLabel(n.getId(), "Landfill");
+                //gv->setVertexLabel(n.getId(), "Landfill");
                 break;
             case RECYCLING_CONTAINER:
                 gv->setVertexColor(n.getId(), "green");
-                gv->setVertexLabel(n.getId(), "Recycling Container");
+                //gv->setVertexLabel(n.getId(), "Recycling Container");
                 break;
             case RECYCLING_CENTRE:
                 gv->setVertexColor(n.getId(), "yellow");
-                gv->setVertexLabel(n.getId(), "Recycling Centre");
+                //gv->setVertexLabel(n.getId(), "Recycling Centre");
                 break;
-                /*case WASTE_BASKET:
-                    gv->setVertexColor(n.getId(), "black");
-                    gv->setVertexLabel(n.getId(), "Waste Basket");
-                    break;
-                case BIN:
-                    gv->setVertexColor(n.getId(), "cyan");
-                    gv->setVertexLabel(n.getId(), "Bin");
-                    break;*/
         }
     }
 
@@ -110,12 +106,16 @@ GraphViewer* loadMap(Graph & graph) {
 int main() {
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
     cout << "Loading Porto Map...";
+
     Graph graph = Graph();
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
-
     GraphViewer* gv = loadMap(graph);
 
     cout << endl << "Porto Map loaded!" << endl;
+
+    showTruckMenu();
+
+    showStartingPointMenu();
 
     return 0;
 

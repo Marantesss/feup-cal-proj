@@ -2,8 +2,8 @@
 
 using namespace std;
 
-void showMainMenu() {
-    cout << "Please choose an option" << endl;
+void showTruckMenu() {
+    cout << "Please choose an option:" << endl;
     cout << "1 - Unlimited capacity trucks" << endl;
     cout << "2 - Unlimited capacity recycling trucks" << endl;
     cout << "3 - Limited capacity recycling trucks" << endl;
@@ -11,9 +11,10 @@ void showMainMenu() {
 }
 
 void showStartingPointMenu() {
-    cout << "Please choose the truck parking lot location" << endl;
+    cout << "Please choose the truck parking lot location:" << endl;
     cout << "1 - Matosinhos (Node ID: 311887304)" << endl;
-    cout << "1 - Asprela (Node ID: 311887304)" << endl;
-    cout << "1 - Matosinhos (Node ID: 311887304)" << endl;
-    cout << "1 - Matosinhos (Node ID: 311887304)" << endl;
+    cout << "2 - Asprela (Node ID: 432578849)" << endl;
+    cout << "2 - Boavista (Node ID: 112675716)" << endl;
+    cout << "0 - Exit" << endl;
 }
+

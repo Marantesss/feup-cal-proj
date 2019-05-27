@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-void showMainMenu();
+void showTruckMenu();
 
 void showStartingPointMenu();
 
