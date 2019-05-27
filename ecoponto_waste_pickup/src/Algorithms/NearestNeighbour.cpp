@@ -1,6 +1,6 @@
 #include "NearestNeighbour.h"
 
-NearestNeighbour::NearestNeighbour(const Graph &graph) : graph(graph)    /*, dfs(graph)*/   {}
+NearestNeighbour::NearestNeighbour(const Graph &graph) : graph(graph), dfs(graph) {}
 
 void NearestNeighbour::initDS() {
     visitOrder.clear();
@@ -57,7 +57,7 @@ NearestNeighbour::calculatePath(unsigned int startId, unsigned int finishId, con
     verifyValidNodes(pois);
 
     visitOrderSize = static_cast<unsigned int>(2 + nodeHashTable.size());
-    //findBestVisitOrder(this->start, this->end);                                                                        //DESCOMENTAR
+    findBestVisitOrder(this->start, this->end);
 
     this->visitOrder.push_back((finishId));
 
@@ -65,8 +65,49 @@ NearestNeighbour::calculatePath(unsigned int startId, unsigned int finishId, con
         this->lastSolution.clear();
         return this->lastSolution;
     } else {
-        //buildSolution();                                                                                               //DESCOMENTAR
+        buildSolution();
         return this->lastSolution;
+    }
+}
+
+void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
+    NodeHashTable reachableNodes = dfs.performSearch(start.getId());
+
+    if (reachableNodes.find(end) == reachableNodes.end())
+        return;
+
+    for (Node n : nodeHashTable) {
+        if (reachableNodes.find(n) == reachableNodes.end())
+            return;
+    }
+
+    addNodeVisitOrder(start);
+
+    Node closestNode;
+    NodeHashTable poisToVisit = nodeHashTable;
+
+    while (!poisToVisit.empty()) {
+        closestNode = getClosestNode(start, poisToVisit);
+
+        findBestVisitOrder(closestNode, end);
+
+        if (visitOrder.size() != visitOrderSize - 1)
+            poisToVisit.erase(closestNode);
+        else
+            return;
+    }
+    if (visitOrder.size() != visitOrderSize - 1)
+        removeNodeVisitOrder(start);
+}
+
+void NearestNeighbour::buildSolution() {
+    Dijkstra dijkstra(graph);
+
+    for (unsigned int i = 0; i < visitOrder.size() - 1; i++) {
+        append_vector(lastSolution, dijkstra.calcOptimalPath(visitOrder.at(i), visitOrder.at(i + 1)));
+
+        if (i != visitOrder.size() - 2)
+            lastSolution.pop_back();
     }
 }
 

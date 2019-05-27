@@ -7,7 +7,7 @@
 
 class Dijkstra {
     // ---- Data Structures
-    Graph &graph;
+    const Graph &graph;
     set<DijNode > pQueue;
     DijNodeHashTable checkedDijNodes;
 
@@ -42,10 +42,10 @@ class Dijkstra {
 
 public:
 
-    Dijkstra(Graph &graph);
+    explicit Dijkstra(const Graph &graph);
 
     // Calculates optimal path between two nodes
-    vector<unsigned int> calcOptimalPath(unsigned int startNodeId, unsigned int finishNodeId);
+    vector<unsigned int> & calcOptimalPath(unsigned int startNodeId, unsigned int finishNodeId);
 
     // Returns the solution weight, if there is a solution at the present moment
     double getSolutionWeight() const;

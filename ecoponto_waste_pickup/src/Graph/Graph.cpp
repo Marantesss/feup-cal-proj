@@ -3,7 +3,7 @@
 Graph::Graph() {}
 
 // ---- Nodes
-unsigned int Graph::getNumNodes() {
+unsigned int Graph::getNumNodes() const {
     return this->nodes.size();
 }
 

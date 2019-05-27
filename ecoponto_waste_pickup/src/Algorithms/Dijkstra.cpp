@@ -1,8 +1,8 @@
 #include "Dijkstra.h"
 
-Dijkstra::Dijkstra(Graph &graph): graph(graph) {}
+Dijkstra::Dijkstra(const Graph &graph): graph(graph) {}
 
-vector<unsigned int> Dijkstra::calcOptimalPath(unsigned int startNodeId, unsigned int finishNodeId) {
+vector<unsigned int> & Dijkstra::calcOptimalPath(unsigned int startNodeId, unsigned int finishNodeId) {
 
     // ---- initialize start and finish nodes
     startNode = Node(startNodeId);

@@ -4,6 +4,8 @@
 #include "../Graph/Node.h"
 #include "../Graph/Graph.h"
 #include "../Utils/defs.h"
+#include "DFS.h"
+#include "Dijkstra.h"
 
 using namespace std;
 
@@ -12,7 +14,7 @@ class NearestNeighbour {
 private:
     const Graph &graph;
     NodeHashTable nodeHashTable;
-    //DFS dfs;
+    DFS dfs;
     vector<unsigned int> visitOrder;
     vector<unsigned int> lastSolution;
 
@@ -24,7 +26,7 @@ private:
 
     void findBestVisitOrder(Node &start, Node &end);
 
-    Node getClosestNode(Node &node, const NodeHashTable otherNodes);
+    Node getClosestNode(Node &node, NodeHashTable otherNodes);
 
     void addNodeVisitOrder(Node &node);
 

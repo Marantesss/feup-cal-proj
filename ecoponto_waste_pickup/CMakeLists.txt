@@ -62,4 +62,4 @@ add_executable(ecoponto_waste_pickup
         src/Graph/Edge.cpp src/Graph/Edge.h
         src/Graph/Node.cpp src/Graph/Node.h
         src/Utils/MapParser.cpp src/Utils/MapParser.h
-        src/Graph/Graph.cpp src/Graph/Graph.h src/Utils/defs.h src/Graph/DijNode.cpp src/Graph/DijNode.h src/Algorithms/Dijkstra.cpp src/Algorithms/Dijkstra.h src/Algorithms/Dijkstra.cpp src/Algorithms/Dijkstra.h src/Algorithms/NearestNeighbour.cpp src/Algorithms/NearestNeighbour.h src/Algorithms/AStar.cpp src/Algorithms/AStar.h)
+        src/Graph/Graph.cpp src/Graph/Graph.h src/Utils/defs.h src/Graph/DijNode.cpp src/Graph/DijNode.h src/Algorithms/Dijkstra.cpp src/Algorithms/Dijkstra.h src/Algorithms/Dijkstra.cpp src/Algorithms/Dijkstra.h src/Algorithms/NearestNeighbour.cpp src/Algorithms/NearestNeighbour.h src/Algorithms/AStar.cpp src/Algorithms/AStar.h src/Algorithms/GraphSearchAlgorithm.cpp src/Algorithms/GraphSearchAlgorithm.h src/Algorithms/DFS.cpp src/Algorithms/DFS.h)
