@@ -11,6 +11,15 @@
 #define BOAVISTA_UPPER_Y 4557222
 #define BOAVISTA_LOWER_Y 4555511
 
+#define MATOSINHOS_PARKING_NODE_ID 311887304
+#define MATOSINHOS_wASTE_STATION_NODE_ID 497301850
+
+#define PARANHOS_PARKING_NODE_ID 432578849
+#define PARANHOS_wASTE_STATION_NODE_ID 314555992
+
+#define BOAVISTA_PARKING_NODE_ID 112675716
+#define BOAVISTA_wASTE_STATION_NODE_ID 299597867
+
 enum nodeType {
     REGULAR,                 // regular node
     WASTE_DISPOSAL,          // medium size disposal bin, for bagged up household items

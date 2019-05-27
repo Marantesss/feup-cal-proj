@@ -186,17 +186,13 @@ GraphViewer* buildGraphViewer(Graph & graph) {
                 gv->setVertexColor(n.getId(), "orange");
                 gv->setVertexLabel(n.getId(), "Waste Container");
                 break;
-            case LANDFILL:
-                gv->setVertexColor(n.getId(), "red");
-                gv->setVertexLabel(n.getId(), "Landfill");
-                break;
             case RECYCLING_CONTAINER:
                 gv->setVertexColor(n.getId(), "green");
                 gv->setVertexLabel(n.getId(), "Recycling Container");
                 break;
             case RECYCLING_CENTRE:
-                gv->setVertexColor(n.getId(), "yellow");
-                gv->setVertexLabel(n.getId(), "Recycling Centre");
+                gv->setVertexColor(n.getId(), "red");
+                //gv->setVertexLabel(n.getId(), "Recycling Centre");
                 break;
         }
     }
