@@ -5,13 +5,15 @@
 #include <sstream>
 #include "Utils/MapParser.h"
 #include "Graph/Graph.h"
+#include "Algorithms/Dijkstra.h"
 
 using namespace std;
 
 int main() {
 
     Graph graph = Graph();
-    graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
+    graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt",
+                     "../maps/Porto/T02_tags_Porto.txt");
 
 
     GraphViewer *gv = new GraphViewer(900, 900, false);
@@ -103,6 +105,16 @@ int main() {
             gv->addEdge(edgeId, i, e.destNodeId, EdgeType::DIRECTED);
             edgeId++;
         }
+    }
+
+
+    Dijkstra dijkstra(graph);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(2074,2090);
+    cout<<"Aqui2\n";
+
+
+    for(unsigned int j=0;j<path.size()-1;j++){
+        cout<<path.at(j)<<"-->"<<endl;
     }
 
     gv->rearrange();
