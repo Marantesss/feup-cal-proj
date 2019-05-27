@@ -21,6 +21,7 @@ private:
     Node start;
     Node end;
     unsigned int visitOrderSize;
+    double solutionTotalCost = DBL_MAX;
 
     void verifyValidNodes(const vector<unsigned int> &pois);
 
@@ -44,6 +45,8 @@ public:
     vector<unsigned int> calculatePath(unsigned int startId, unsigned int finishId, const vector<u_int> &pois);
 
     vector<unsigned int> getVisitOrder();
+
+    double getSolutionWeight()const;
 
 
 
