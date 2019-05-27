@@ -102,13 +102,20 @@ void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
 
 void NearestNeighbour::buildSolution() {
     Dijkstra dijkstra(graph);
+    this->solutionTotalCost = 0;
 
     for (unsigned int i = 0; i < visitOrder.size() - 1; i++) {
         append_vector(lastSolution, dijkstra.calcOptimalPath(visitOrder.at(i), visitOrder.at(i + 1)));
 
+        this->solutionTotalCost += dijkstra.getSolutionWeight();
+
         if (i != visitOrder.size() - 2)
             lastSolution.pop_back();
     }
+}
+
+double NearestNeighbour::getSolutionWeight() const {
+    return this->solutionTotalCost;
 }
 
 
