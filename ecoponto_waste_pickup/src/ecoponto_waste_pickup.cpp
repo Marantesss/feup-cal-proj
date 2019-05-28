@@ -5,6 +5,7 @@
 #include "Utils/MapParser.h"
 #include "UserInterface/UserInterface.h"
 #include "Algorithms/Dijkstra.h"
+#include "Algorithms/NearestNeighbour.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ int main() {
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
     GraphViewer* gv = buildGraphViewer(graph);
 
-    vector<unsigned int> wasteContainers;
+    vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
     vector<unsigned int> recyclingContainers;
 
     cout << endl << "Porto Map loaded!" << endl;
@@ -51,7 +52,7 @@ int main() {
             break;
     }
     */
-
+/*
     Dijkstra dijkstra(graph);
     vector<unsigned int> path = dijkstra.calcOptimalPath(1239645082, 474559375);
 
@@ -59,6 +60,14 @@ int main() {
         cout<<path.at(j)<<"-->";
         gv->setVertexColor(path.at(j), "pink");
     }
+*/
+    NearestNeighbour nearestNeighbour(graph);
+    vector<unsigned  int> path = nearestNeighbour.calculatePath(1239645082, 474559375, wasteContainers );
+    for(unsigned int j=0;j<path.size();j++) {
+        cout<<path.at(j)<<"-->";
+        gv->setVertexColor(path.at(j), "pink");
+    }
+
 
     return 0;
 }

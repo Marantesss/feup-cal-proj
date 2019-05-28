@@ -2,11 +2,6 @@
 
 using namespace std;
 
-double minX;
-double minY;
-double maxX;
-double maxY;
-
 Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags) {
     Graph returnGraph = Graph();
 
@@ -137,10 +132,10 @@ GraphViewer* buildGraphViewer(Graph & graph) {
 
     Node n = graph.getNodeByIndex(0);
 
-    minX = n.getX();
-    minY = n.getY();
-    maxX = n.getX();
-    maxY = n.getY();
+    double minX = n.getX();
+    double minY = n.getY();
+    double maxX = n.getX();
+    double maxY = n.getY();
 
     for (size_t i = 1; i < graph.getNumNodes(); i++) {
 
@@ -166,11 +161,8 @@ GraphViewer* buildGraphViewer(Graph & graph) {
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
 
-        n.setX(n.getX() - minX);
-        n.setY(n.getY() - minY);
-
-        xPercent = (n.getX()) / graphWidth;
-        yPercent = 1.0 - ((n.getY()) / graphHeight);
+        xPercent = (n.getX() - minX) / graphWidth;
+        yPercent = 1.0 - ((n.getY() - minY) / graphHeight);
 
         gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
 
@@ -192,7 +184,7 @@ GraphViewer* buildGraphViewer(Graph & graph) {
                 break;
             case RECYCLING_CENTRE:
                 gv->setVertexColor(n.getId(), "red");
-                //gv->setVertexLabel(n.getId(), "Recycling Centre");
+                gv->setVertexLabel(n.getId(), "Recycling Centre");
                 break;
         }
     }
@@ -218,9 +210,8 @@ GraphViewer* buildGraphViewer(Graph & graph) {
 
 bool isMatosinhos(Node node) {
 
-    double matosinhos_max_x = MATOSINHOS_X - minX;
 
-    if (node.getX() > matosinhos_max_x)
+    if (node.getX() > MATOSINHOS_X)
         return false;
 
     return true;
@@ -228,18 +219,13 @@ bool isMatosinhos(Node node) {
 
 bool isBoavista(Node node) {
 
-    double boavista_min_x = BOAVISTA_UPPER_X - minX;
-    double boavist_max_x = BOAVISTA_LOWER_X - minX;
-    double boavista_max_y = BOAVISTA_UPPER_Y - minY;
-    double boavista_min_y = BOAVISTA_LOWER_Y - minY;
-
-    if (node.getX() < boavista_min_x)
+    if (node.getX() < BOAVISTA_UPPER_X)
         return false;
-    if(node.getY() > boavista_max_y)
+    if(node.getY() > BOAVISTA_UPPER_Y)
         return false;
-    if(node.getX() > boavist_max_x)
+    if(node.getX() > BOAVISTA_LOWER_X)
         return false;
-    if(node.getY() < boavista_min_y)
+    if(node.getY() < BOAVISTA_LOWER_Y)
         return false;
 
     return true;
@@ -247,12 +233,10 @@ bool isBoavista(Node node) {
 }
 
 bool isParanhos(Node node) {
-    double paranhos_min_x = PARANHOS_X - minX;
-    double paranhos_min_y = PARANHOS_Y - minY;
 
-    if (node.getX() < paranhos_min_x)
+    if (node.getX() < PARANHOS_X)
         return false;
-    if (node.getY() < paranhos_min_y)
+    if (node.getY() < PARANHOS_Y)
         return false;
 
     return true;
