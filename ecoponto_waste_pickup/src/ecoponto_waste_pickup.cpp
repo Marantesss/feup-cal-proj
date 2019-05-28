@@ -22,6 +22,7 @@ int main() {
 
     cout << endl << "Porto Map loaded!" << endl;
 
+    /*
     switch (getTruckMenuOption()) {
         case 0:
             return 0; // exit
@@ -49,13 +50,15 @@ int main() {
             recyclingContainers = getBoavistaRecyclingContainers(graph);
             break;
     }
+     */
 
     Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(90379759,311887142);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(1243809331, 343646790);
 
     cout<<"Fuck Here"<<endl;
-    for(unsigned int j=0;j<path.size()-1;j++){
-        cout<<path.at(j)<<"-->"<<endl;
+    for(unsigned int j=0;j<path.size();j++){
+        cout<<path.at(j)<<"-->";
+        gv->setVertexColor(path.at(j), "pink");
     }
 
     return 0;

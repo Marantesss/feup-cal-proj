@@ -6,8 +6,8 @@ Dijkstra::Dijkstra(const Graph &graph): graph(graph) {}
 vector<unsigned int> & Dijkstra::calcOptimalPath(unsigned int startNodeId, unsigned int finishNodeId) {
 
     // ---- initialize start and finish nodes
-    startNode = Node(startNodeId);
-    finishNode = Node(finishNodeId);
+    startNode = graph.getNode(startNodeId);
+    finishNode = graph.getNode(finishNodeId);
     // ---- populate queue graph's nodes
     checkedDijNodes.clear();
     lastSolution.clear();
@@ -32,7 +32,6 @@ vector<unsigned int> & Dijkstra::calcOptimalPath(unsigned int startNodeId, unsig
 
         //Analise next nodes and updateQueue
         updateQueue();
-
     }
 
     return lastSolution;
@@ -42,7 +41,7 @@ void Dijkstra::populateQueue() {
     pQueue.clear();
 
     for (unsigned int i = 0; i < this->graph.getNumNodes(); i++) {
-        if (i == this->startNode.getId()) {
+        if (this->startNode.getId() == graph.getNodeByIndex(i).getId()) {
             this->pQueue.emplace(this->startNode,0);
         }
         else {
@@ -78,6 +77,7 @@ void Dijkstra::buildPath() {
     lastSolution.clear();
 
     unsigned int currDNodeId = this->finishNode.getId();
+
     while (currDNodeId != UINT_MAX) {
         lastSolution.insert(lastSolution.begin(), currDNodeId);
         currDNodeId = getCheckedNode(currDNodeId).getLastNodeId();
@@ -95,7 +95,6 @@ void Dijkstra::updateQueue(){
             continue;
         }
 
-        //get edge's destination
         DijNode currDNode = DijNode(this->graph.getNode(e.destNodeId),
                                 topDNode.getId(),
                                 topDNode.getTotalWeight() + e.weight);
