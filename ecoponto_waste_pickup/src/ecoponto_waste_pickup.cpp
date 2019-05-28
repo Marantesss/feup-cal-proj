@@ -17,7 +17,7 @@ int main() {
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
     GraphViewer* gv = buildGraphViewer(graph);
 
-    vector<unsigned int> wasteContainers = getMatosinhosWasteContainers(graph);
+    vector<unsigned int> wasteContainers;
     vector<unsigned int> recyclingContainers;
 
     cout << endl << "Porto Map loaded!" << endl;
