@@ -8,6 +8,7 @@
 using namespace std;
 
 int main() {
+
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
     cout << "Loading Porto Map...";
 
@@ -15,20 +16,38 @@ int main() {
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
     GraphViewer* gv = buildGraphViewer(graph);
 
-    vector<unsigned int> matosinhosWasteContainers = getMatosinhosWasteContainers(graph);
-    vector<unsigned int> matosinhosRecyclingContainers = getMatosinhosRecyclingContainers(graph);
-
-    vector<unsigned int> boavistaWasteContainers = getBoavistaWasteContainers(graph);
-    vector<unsigned int> boavistaRecyclingContainers = getBoavistaRecyclingContainers(graph);
-
-    vector<unsigned int> paranhosWasteContainers = getParanhosWasteContainers(graph);
-    vector<unsigned int> paranhosRecyclingContainers = getParanhosRecyclingContainers(graph);
+    vector<unsigned int> wasteContainers;
+    vector<unsigned int> recyclingContainers;
 
     cout << endl << "Porto Map loaded!" << endl;
 
-    showTruckMenu();
+    switch (getTruckMenuOption()) {
+        case 0:
+            return 0; // exit
+        case 1:
+            break; // unlimited capacity trucks
+        case 2:
+            break; // unlimited capacity recycling trucks
+        case 3:
+            break; // limited capacity recycling trucks
+    }
 
-    showStartingPointMenu();
+    switch(getStartingPointMenuOption()) {
+        case 0:
+            return 0;
+        case 1:
+            wasteContainers = getMatosinhosWasteContainers(graph);
+            recyclingContainers = getMatosinhosRecyclingContainers(graph);
+            break;
+        case 2:
+            wasteContainers = getParanhosWasteContainers(graph);
+            recyclingContainers = getParanhosRecyclingContainers(graph);
+            break;
+        case 3:
+            wasteContainers = getBoavistaWasteContainers(graph);
+            recyclingContainers = getBoavistaRecyclingContainers(graph);
+            break;
+    }
 
     return 0;
 }

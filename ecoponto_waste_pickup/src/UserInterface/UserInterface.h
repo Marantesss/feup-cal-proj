@@ -5,6 +5,10 @@
 
 void showTruckMenu();
 
+int getTruckMenuOption();
+
 void showStartingPointMenu();
+
+int getStartingPointMenuOption();
 
 #endif //ECOPONTO_WASTE_PICKUP_USERINTERFACE_H
