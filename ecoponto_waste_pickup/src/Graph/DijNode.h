@@ -30,6 +30,7 @@ public:
 
     // ---- totalWeight getter
     double getTotalWeight() const;
+    void setTotalWeight(unsigned int weight);
 
     // ---- 'Less than' operator
     virtual bool operator<(const DijNode &d2) const;

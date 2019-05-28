@@ -45,6 +45,10 @@ double DijNode::getTotalWeight() const {
     return totalWeight;
 }
 
+void DijNode::setTotalWeight(unsigned int weight) {
+    this->totalWeight = weight;
+}
+
 
 bool DijNode::operator<(const DijNode& d2) const{
     if(this->totalWeight == d2.getTotalWeight()){

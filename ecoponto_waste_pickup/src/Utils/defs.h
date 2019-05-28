@@ -1,6 +1,27 @@
 #ifndef ECOPONTO_WASTE_PICKUP_DEFS_H
 #define ECOPONTO_WASTE_PICKUP_DEFS_H
 
+#define MATOSINHOS_X 528028
+
+#define PARANHOS_X 533327
+#define PARANHOS_Y 4557202
+
+#define BOAVISTA_UPPER_X 529642
+#define BOAVISTA_LOWER_X 532548
+#define BOAVISTA_UPPER_Y 4557222
+#define BOAVISTA_LOWER_Y 4555511
+
+#define MATOSINHOS_PARKING_NODE_ID 311887304
+#define MATOSINHOS_WASTE_STATION_NODE_ID 497301850
+
+#define PARANHOS_PARKING_NODE_ID 432578849
+#define PARANHOS_WASTE_STATION_NODE_ID 314555992
+
+#define BOAVISTA_PARKING_NODE_ID 112675716
+#define BOAVISTA_WASTE_STATION_NODE_ID 299597867
+
+#define CONTAINER_PICKUP_VALID 0.6
+
 enum nodeType {
     REGULAR,                 // regular node
     WASTE_DISPOSAL,          // medium size disposal bin, for bagged up household items
@@ -10,6 +31,11 @@ enum nodeType {
     RECYCLING_CENTRE,        // recycling centre
     WASTE_BASKET,            // small size disposal bin
     BIN                      // presence of a waste basket at/in a facility
+};
+
+enum truckType {
+    WASTE,
+    RECYCLE
 };
 
 #endif //ECOPONTO_WASTE_PICKUP_DEFS_H

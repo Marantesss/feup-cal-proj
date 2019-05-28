@@ -8,8 +8,8 @@ unsigned int Graph::getNumNodes() const {
 }
 
 
-unsigned int Graph::addNode(unsigned int id, double latitude, double longitude, string name) {
-    nodes.push_back(Node(latitude, longitude, id, name));
+unsigned int Graph::addNode(unsigned int id, double x, double y) {
+    nodes.push_back(Node(x, y, id));
 }
 
 unsigned int Graph::getNodeIndex(unsigned int id) const {
@@ -21,30 +21,31 @@ unsigned int Graph::getNodeIndex(unsigned int id) const {
     return -1;
 }
 
-Node & Graph::getNode(unsigned int id) const {
+Node &Graph::getNode(unsigned int id) const {
     return const_cast<Node &>(nodes.at(getNodeIndex(id)));
 }
 
-Node Graph::getNodeByIndex(int index) {
+Node Graph::getNodeByIndex(int index) const {
     return nodes.at(index);
 }
 
 // ---- Edges
+bool Graph::addEdge(unsigned int originNodeID, unsigned int destNodeID) {
 
-bool Graph::addEdge(unsigned int nodeId1, unsigned int nodeId2, const double &weight) {
-
-    int node1index = getNodeIndex(nodeId1);
+    int node1index = getNodeIndex(originNodeID);
     if (node1index == -1) {    // Node 1 not found
         return false;
     }
 
-    int node2index = getNodeIndex(nodeId2);
+    int node2index = getNodeIndex(destNodeID);
     if (node2index == -1) {    // Node 2 not found
         return false;
     }
 
+    double weight = getNode(originNodeID).getDistanceToNode(getNode(destNodeID));
+
     // Add the node connections
-    return nodes.at(node1index).addNodeConnection(node2index, weight);
+    return nodes.at(node1index).addNodeConnection(destNodeID, weight);
 }
 
 vector<Edge> Graph::getEdges(unsigned int id) {

@@ -2,22 +2,21 @@
 
 Node::Node() {
     this->id = 0;
-    this->latitude = 0;
-    this->longitude = 0;
+    this->x = 0;
+    this->y = 0;
     this->type = REGULAR;
 }
 
 Node::Node(unsigned int id) : id(id) {
-    this->latitude = 0;
-    this->longitude = 0;
+    this->x = 0;
+    this->y = 0;
     this->type = REGULAR;
 }
 
-Node::Node(double latitude, double longitude, unsigned int id, const string &name) :
-    latitude(latitude),
-    longitude(longitude),
+Node::Node(double x, double y, unsigned int id) :
+    x(x),
+    y(y),
     id(id),
-    name(name),
     type(REGULAR) {}
 
 unsigned int Node::getConnectionIndex(unsigned int destNodeId) const {
@@ -34,20 +33,20 @@ unsigned int Node::getConnectionIndex(unsigned int destNodeId) const {
 
 
 //getters and setters
-double Node::getLatitude() const {
-    return latitude;
+double Node::getX() const {
+    return x;
 }
 
-void Node::setLatitude(double latitude) {
-    Node::latitude = latitude;
+void Node::setX(double x) {
+    Node::x = x;
 }
 
-double Node::getLongitude() const {
-    return longitude;
+double Node::getY() const {
+    return y;
 }
 
-void Node::setLongitude(double longitude) {
-    Node::longitude = longitude;
+void Node::setY(double y) {
+    Node::y = y;
 }
 
 unsigned int Node::getId() const {
@@ -56,14 +55,6 @@ unsigned int Node::getId() const {
 
 void Node::setId(unsigned int id) {
     Node::id = id;
-}
-
-const string &Node::getName() const {
-    return name;
-}
-
-void Node::setName(const string &name) {
-    Node::name = name;
 }
 
 const nodeType Node::getType() const {
@@ -94,8 +85,8 @@ bool Node::addNodeConnection(unsigned int destNodeId , const double & weight) {
 }
 
 double Node::getDistanceToNode(const Node otherNode) {
-    return sqrt(pow(this->getLatitude() - otherNode.getLatitude(), 2) +
-                pow(this->getLongitude() - this->getLongitude(), 2));
+    return sqrt(pow(this->getX() - otherNode.getX(), 2) +
+                pow(this->getY() - this->getY(), 2));
 }
 
 bool Node::isDeadEnd() const {

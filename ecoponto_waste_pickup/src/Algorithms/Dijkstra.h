@@ -8,7 +8,7 @@
 class Dijkstra {
     // ---- Data Structures
     const Graph &graph;
-    set<DijNode > pQueue;
+    set<DijNode> pQueue;
     DijNodeHashTable checkedDijNodes;
 
     // ---- Variables for current calculation
