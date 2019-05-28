@@ -20,6 +20,8 @@
 #define BOAVISTA_PARKING_NODE_ID 112675716
 #define BOAVISTA_WASTE_STATION_NODE_ID 299597867
 
+#define CONTAINER_PICKUP_VALID 0.6
+
 enum nodeType {
     REGULAR,                 // regular node
     WASTE_DISPOSAL,          // medium size disposal bin, for bagged up household items
@@ -31,5 +33,9 @@ enum nodeType {
     BIN                      // presence of a waste basket at/in a facility
 };
 
+enum truckType {
+    WASTE,
+    RECYCLE
+};
 
 #endif //ECOPONTO_WASTE_PICKUP_DEFS_H
