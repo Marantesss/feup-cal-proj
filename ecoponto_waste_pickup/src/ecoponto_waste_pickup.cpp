@@ -6,6 +6,7 @@
 #include "UserInterface/UserInterface.h"
 #include "Algorithms/Dijkstra.h"
 #include "Algorithms/NearestNeighbour.h"
+#include "Graph/Graph.h"
 
 using namespace std;
 
@@ -75,6 +76,8 @@ int main() {
         gv->setVertexColor(path2.at(j), "pink");
     }
 */
+
+    gv->rearrange();
 
     return 0;
 }
