@@ -18,7 +18,7 @@ int main() {
     graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
     GraphViewer* gv = buildGraphViewer(graph);
 
-    vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
+    //vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
     vector<unsigned int> recyclingContainers;
 
     cout << endl << "Porto Map loaded!" << endl;
@@ -52,22 +52,29 @@ int main() {
             break;
     }
     */
+//Dijkstra testing
 /*
     Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(1239645082, 474559375);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(428214944, 428214907);
 
     for(unsigned int j=0;j<path.size();j++) {
         cout<<path.at(j)<<"-->";
-        gv->setVertexColor(path.at(j), "pink");
+        gv->setVertexColor(path.at(j), "red");
     }
 */
-    NearestNeighbour nearestNeighbour(graph);
-    vector<unsigned  int> path = nearestNeighbour.calculatePath(1239645082, 474559375, wasteContainers );
-    for(unsigned int j=0;j<path.size();j++) {
-        cout<<path.at(j)<<"-->";
-        gv->setVertexColor(path.at(j), "pink");
-    }
 
+//Nearest Neighbour testing
+/*
+    vector<unsigned int> wasteContainers;
+    wasteContainers.push_back(428216347);
+    wasteContainers.push_back(428214952);
+    NearestNeighbour nearestNeighbour(graph);
+    vector<unsigned  int> path2 = nearestNeighbour.calculatePath(428214944, 428214907, wasteContainers );
+    for(unsigned int j=0;j<path2.size();j++) {
+        cout<<path2.at(j)<<"-->";
+        gv->setVertexColor(path2.at(j), "pink");
+    }
+*/
 
     return 0;
 }

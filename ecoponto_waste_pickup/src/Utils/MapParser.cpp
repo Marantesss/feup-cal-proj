@@ -176,7 +176,7 @@ GraphViewer* buildGraphViewer(Graph & graph) {
         switch (n.getType()) {
             case WASTE_DISPOSAL:
                 gv->setVertexColor(n.getId(), "orange");
-                gv->setVertexLabel(n.getId(), "Waste Container");
+                //gv->setVertexLabel(n.getId(), "Waste Container");
                 break;
             case RECYCLING_CONTAINER:
                 gv->setVertexColor(n.getId(), "green");
