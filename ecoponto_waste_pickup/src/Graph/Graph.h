@@ -13,14 +13,14 @@ public:
     // ---- constructor
     Graph();
     // ---- Nodes
-    unsigned int addNode(unsigned int id, double latitude, double longitude, string name);
+    unsigned int addNode(unsigned int id, double x, double y);
     unsigned int getNumNodes() const;
     unsigned int getNodeIndex(unsigned int id) const;
-    Node & getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
-    Node getNodeByIndex(int index);
+    Node &getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
+    Node getNodeByIndex(int index) const;
 
     // ---- Edges
-    bool addEdge(unsigned int nodeId1 , unsigned int nodeId2 , const double & weight);
+    bool addEdge(unsigned int originNodeID, unsigned int destNodeID);
     vector<Edge> getEdges(unsigned int id);
     unsigned int getNumEdges();
 };
