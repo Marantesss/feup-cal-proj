@@ -50,13 +50,12 @@ int main() {
             recyclingContainers = getBoavistaRecyclingContainers(graph);
             break;
     }
-     */
+    */
 
     Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(1243809331, 343646790);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(1239645082, 474559375);
 
-    cout<<"Fuck Here"<<endl;
-    for(unsigned int j=0;j<path.size();j++){
+    for(unsigned int j=0;j<path.size();j++) {
         cout<<path.at(j)<<"-->";
         gv->setVertexColor(path.at(j), "pink");
     }
