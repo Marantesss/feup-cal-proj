@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Utils/MapParser.h"
 #include "UserInterface/UserInterface.h"
+#include "Algorithms/Dijkstra.h"
 
 using namespace std;
 
@@ -47,6 +48,14 @@ int main() {
             wasteContainers = getBoavistaWasteContainers(graph);
             recyclingContainers = getBoavistaRecyclingContainers(graph);
             break;
+    }
+
+    Dijkstra dijkstra(graph);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(90379759,311887142);
+
+    cout<<"Fuck Here"<<endl;
+    for(unsigned int j=0;j<path.size()-1;j++){
+        cout<<path.at(j)<<"-->"<<endl;
     }
 
     return 0;

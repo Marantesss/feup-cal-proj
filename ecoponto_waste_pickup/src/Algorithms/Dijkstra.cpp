@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Dijkstra.h"
 
 Dijkstra::Dijkstra(const Graph &graph): graph(graph) {}
@@ -7,7 +8,6 @@ vector<unsigned int> & Dijkstra::calcOptimalPath(unsigned int startNodeId, unsig
     // ---- initialize start and finish nodes
     startNode = Node(startNodeId);
     finishNode = Node(finishNodeId);
-
     // ---- populate queue graph's nodes
     checkedDijNodes.clear();
     lastSolution.clear();
@@ -46,7 +46,7 @@ void Dijkstra::populateQueue() {
             this->pQueue.emplace(this->startNode,0);
         }
         else {
-            this->pQueue.emplace(this->graph.getNode(i));
+            this->pQueue.emplace(graph.getNodeByIndex(i));
         }
     }
 }

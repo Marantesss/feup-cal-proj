@@ -21,11 +21,11 @@ unsigned int Graph::getNodeIndex(unsigned int id) const {
     return -1;
 }
 
-Node & Graph::getNode(unsigned int id) const {
+Node &Graph::getNode(unsigned int id) const {
     return const_cast<Node &>(nodes.at(getNodeIndex(id)));
 }
 
-Node Graph::getNodeByIndex(int index) {
+Node Graph::getNodeByIndex(int index) const {
     return nodes.at(index);
 }
 

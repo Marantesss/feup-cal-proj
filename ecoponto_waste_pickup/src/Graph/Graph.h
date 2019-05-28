@@ -16,8 +16,8 @@ public:
     unsigned int addNode(unsigned int id, double x, double y);
     unsigned int getNumNodes() const;
     unsigned int getNodeIndex(unsigned int id) const;
-    Node & getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
-    Node getNodeByIndex(int index);
+    Node &getNode(unsigned int id) const; // we need to return the reference so we can set the node type when parsing
+    Node getNodeByIndex(int index) const;
 
     // ---- Edges
     bool addEdge(unsigned int originNodeID, unsigned int destNodeID);
