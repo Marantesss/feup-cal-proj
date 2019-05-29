@@ -72,8 +72,9 @@ vector<unsigned int> NearestNeighbour::calculatePath(unsigned int startId, unsig
 void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
     NodeHashTable reachableNodes = dfs.performSearch(start.getId());
 
-    if (reachableNodes.find(end) == reachableNodes.end())
+    if (reachableNodes.find(end) == reachableNodes.end()) {
         return;
+    }
 
     for (Node n : containerHashTable) {
         if (reachableNodes.find(n) == reachableNodes.end())
@@ -90,7 +91,7 @@ void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
 
         findBestVisitOrder(closestNode, end);
 
-        if (visitOrder.size() != visitOrderSize - 1)
+        if (visitOrder.size() != visitOrderSize - 1) // -1 because of finalNode
             containersToVisit.erase(closestNode);
         else
             return;

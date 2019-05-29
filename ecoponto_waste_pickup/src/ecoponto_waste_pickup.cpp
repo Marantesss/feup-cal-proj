@@ -54,26 +54,40 @@ int main() {
     }
      */
     //Dijkstra testing
-
-
+    /*
     Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(PARANHOS_PARKING_NODE_ID, PARANHOS_WASTE_STATION_NODE_ID);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID);
 
     for(unsigned int j=0;j<path.size();j++) {
         cout<<path.at(j)<<"-->";
         gv->setVertexColor(path.at(j), "pink");
     }
+     */
+
+    DFS dfs = DFS(graph);
+    NodeHashTable accessNodes = dfs.performSearch(BOAVISTA_PARKING_NODE_ID);
+    NodeHashTable::iterator it;
+
+    vector<Container> wasteContainers;
+
+    for (it = accessNodes.begin(); it != accessNodes.end(); it++) {
+        if (it->getType() == RECYCLING_CONTAINER && isBoavista(*it)) {
+            Container newContainer = Container(*it);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
+    }
+
+    if(dfs.isPossible(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID))
+        cout << "is possible" << endl;
 
     //Nearest Neighbour testing DOES NOT WORK SOMETIMES :( SAD LIFE
-    /*
-    vector<Container> wasteContainers = getBoavistaRecyclingContainers(graph);
     NearestNeighbour nearestNeighbour(graph);
     vector<unsigned  int> path2 = nearestNeighbour.calculatePath(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID, wasteContainers );
     for(unsigned int j=0;j<path2.size();j++) {
         cout<<path2.at(j)<<"-->";
         gv->setVertexColor(path2.at(j), "pink");
     }
-    */
 
     gv->rearrange();
 
