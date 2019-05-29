@@ -65,17 +65,18 @@ int main() {
 */
 
 //Nearest Neighbour testing
-/*
+
     vector<unsigned int> wasteContainers;
     wasteContainers.push_back(428216347);
     wasteContainers.push_back(428214952);
+    wasteContainers.push_back(477729714);
     NearestNeighbour nearestNeighbour(graph);
     vector<unsigned  int> path2 = nearestNeighbour.calculatePath(428214944, 428214907, wasteContainers );
     for(unsigned int j=0;j<path2.size();j++) {
         cout<<path2.at(j)<<"-->";
         gv->setVertexColor(path2.at(j), "pink");
     }
-*/
+
 
     gv->rearrange();
 

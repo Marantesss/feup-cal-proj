@@ -34,7 +34,6 @@ Node NearestNeighbour::getClosestNode(Node &node, const NodeHashTable otherNodes
             closestNode = n;
             closestDistance = aux;
         }
-
     }
     return closestNode;
 }
