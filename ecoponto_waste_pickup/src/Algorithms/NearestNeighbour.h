@@ -6,6 +6,7 @@
 #include "../Utils/defs.h"
 #include "DFS.h"
 #include "Dijkstra.h"
+#include "Graph/Container.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ using namespace std;
 class NearestNeighbour {
 private:
     const Graph &graph;
-    NodeHashTable nodeHashTable;
+    ContainerHashTable containerHashTable;
     DFS dfs;
     vector<unsigned int> visitOrder;
     vector<unsigned int> lastSolution;
@@ -23,11 +24,11 @@ private:
     unsigned int visitOrderSize;
     double solutionTotalCost = DBL_MAX;
 
-    void verifyValidNodes(const vector<unsigned int> &pois);
+    void verifyValidNodes(const vector<Container> &containers);
 
     void findBestVisitOrder(Node &start, Node &end);
 
-    Node getClosestNode(Node &node, NodeHashTable otherNodes);
+    Node getClosestNode(Node &node, ContainerHashTable otherNodes);
 
     void addNodeVisitOrder(Node &node);
 
@@ -42,7 +43,7 @@ private:
 public:
     explicit NearestNeighbour(const Graph &graph);
 
-    vector<unsigned int> calculatePath(unsigned int startId, unsigned int finishId, const vector<u_int> &pois);
+    vector<unsigned int> calculatePath(unsigned int startId, unsigned int finishId, const vector<Container> &containers);
 
     vector<unsigned int> getVisitOrder();
 

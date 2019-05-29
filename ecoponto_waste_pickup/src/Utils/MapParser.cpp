@@ -40,8 +40,6 @@ void parseNodes(std::ifstream & fileNodes, Graph &graph) {
     std::string currLine = "";
     getline(fileNodes, currLine);
 
-    u_int nodeCounter = 0;
-
     while(!fileNodes.eof()) {
         getline(fileNodes, currLine);
 
@@ -55,8 +53,6 @@ void parseNodes(std::ifstream & fileNodes, Graph &graph) {
         double node_y = stod(currLine.substr(0, currLine.find_first_of(")")));
 
         graph.addNode(nodeId, node_x, node_y);
-
-        nodeCounter++;
     }
 }
 
@@ -166,6 +162,7 @@ GraphViewer* buildGraphViewer(Graph & graph) {
 
         gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
 
+        // ---- drawing areas
         if (isMatosinhos(n)) // Matosinhos
             gv->setVertexColor(n.getId(), "blue");
         else if (isParanhos(n)) // Paranhos
@@ -173,20 +170,24 @@ GraphViewer* buildGraphViewer(Graph & graph) {
         else if (isBoavista(n)) // Boavista
             gv->setVertexColor(n.getId(), "blue");
 
-        switch (n.getType()) {
-            case WASTE_DISPOSAL:
-                gv->setVertexColor(n.getId(), "orange");
-                //gv->setVertexLabel(n.getId(), "Waste Container");
-                break;
-            case RECYCLING_CONTAINER:
-                gv->setVertexColor(n.getId(), "green");
-                gv->setVertexLabel(n.getId(), "Recycling Container");
-                break;
-            case RECYCLING_CENTRE:
-                gv->setVertexColor(n.getId(), "red");
-                gv->setVertexLabel(n.getId(), "Recycling Centre");
-                break;
-        }
+        // ---- drawing specific types within interest areas
+        if (isMatosinhos(n) || isBoavista(n) || isParanhos(n))
+            switch (n.getType()) {
+                case WASTE_DISPOSAL:
+                    gv->setVertexColor(n.getId(), "orange");
+                    gv->setVertexLabel(n.getId(), "Waste Container");
+                    break;
+                case RECYCLING_CONTAINER:
+                    gv->setVertexColor(n.getId(), "green");
+                    gv->setVertexLabel(n.getId(), "Recycling Container");
+                    break;
+            }
+
+        // ---- drawing starting and ending points
+        if (isStartingNode(n))
+            gv->setVertexColor(n.getId(), "cyan");
+        if (isFinalNode(n))
+            gv->setVertexColor(n.getId(), "red");
     }
 
 
@@ -242,74 +243,104 @@ bool isParanhos(Node node) {
     return true;
 }
 
-vector<unsigned int> getMatosinhosWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+bool isStartingNode(Node node) {
+    unsigned int id = node.getId();
+
+    return id == MATOSINHOS_PARKING_NODE_ID || id == BOAVISTA_PARKING_NODE_ID || id == PARANHOS_PARKING_NODE_ID;
+}
+
+bool isFinalNode(Node node) {
+    unsigned int id = node.getId();
+
+    return id == MATOSINHOS_WASTE_STATION_NODE_ID || id == BOAVISTA_WASTE_STATION_NODE_ID || id == PARANHOS_WASTE_STATION_NODE_ID;
+}
+
+vector<Container> getMatosinhosWasteContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isMatosinhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && isMatosinhos(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getMatosinhosRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getMatosinhosRecyclingContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isMatosinhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && isMatosinhos(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getBoavistaWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getBoavistaWasteContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isBoavista(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && isBoavista(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getBoavistaRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getBoavistaRecyclingContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isBoavista(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && isBoavista(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
     return wasteContainers;
 }
 
 
 
-vector<unsigned int> getParanhosWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getParanhosWasteContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isParanhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && isParanhos(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getParanhosRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getParanhosRecyclingContainers(Graph &graph) {
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isParanhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && isParanhos(n)) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
     return wasteContainers;
 }

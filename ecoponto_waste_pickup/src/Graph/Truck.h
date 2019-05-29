@@ -7,6 +7,8 @@
 class Truck {
 
 private:
+    double maxCapacity;
+
     double capacity;
 
     truckType type;
@@ -15,6 +17,10 @@ public:
     Truck();
 
     Truck(double capacity, truckType type);
+
+    double getMaxCapacity() const;
+
+    void setMaxCapacity(double maxCapacity);
 
     double getCapacity() const;
 

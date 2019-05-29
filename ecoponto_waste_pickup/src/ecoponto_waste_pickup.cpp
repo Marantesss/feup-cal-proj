@@ -52,31 +52,28 @@ int main() {
             recyclingContainers = getBoavistaRecyclingContainers(graph);
             break;
     }
-    */
-//Dijkstra testing
-/*
+     */
+    //Dijkstra testing
+
+
     Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(428214944, 428214907);
+    vector<unsigned int> path = dijkstra.calcOptimalPath(PARANHOS_PARKING_NODE_ID, PARANHOS_WASTE_STATION_NODE_ID);
 
     for(unsigned int j=0;j<path.size();j++) {
         cout<<path.at(j)<<"-->";
-        gv->setVertexColor(path.at(j), "red");
+        gv->setVertexColor(path.at(j), "pink");
     }
-*/
 
-//Nearest Neighbour testing
-
-    vector<unsigned int> wasteContainers;
-    wasteContainers.push_back(428216347);
-    wasteContainers.push_back(428214952);
-    wasteContainers.push_back(477729714);
+    //Nearest Neighbour testing DOES NOT WORK SOMETIMES :( SAD LIFE
+    /*
+    vector<Container> wasteContainers = getBoavistaRecyclingContainers(graph);
     NearestNeighbour nearestNeighbour(graph);
-    vector<unsigned  int> path2 = nearestNeighbour.calculatePath(428214944, 428214907, wasteContainers );
+    vector<unsigned  int> path2 = nearestNeighbour.calculatePath(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID, wasteContainers );
     for(unsigned int j=0;j<path2.size();j++) {
         cout<<path2.at(j)<<"-->";
         gv->setVertexColor(path2.at(j), "pink");
     }
-
+    */
 
     gv->rearrange();
 

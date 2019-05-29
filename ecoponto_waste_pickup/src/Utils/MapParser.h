@@ -9,6 +9,7 @@
 #include "defs.h"
 #include "GraphViewer/edgetype.h"
 #include "GraphViewer/graphviewer.h"
+#include "Graph/Container.h"
 
 Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
 
@@ -28,13 +29,17 @@ bool isBoavista(Node node);
 
 bool isParanhos(Node node);
 
-vector<unsigned int> getMatosinhosWasteContainers(Graph &graph);
-vector<unsigned int> getMatosinhosRecyclingContainers(Graph &graph);
+bool isStartingNode(Node node);
 
-vector<unsigned int> getBoavistaWasteContainers(Graph &graph);
-vector<unsigned int> getBoavistaRecyclingContainers(Graph &graph);
+bool isFinalNode(Node node);
 
-vector<unsigned int> getParanhosWasteContainers(Graph &graph);
-vector<unsigned int> getParanhosRecyclingContainers(Graph &graph);
+vector<Container> getMatosinhosWasteContainers(Graph &graph);
+vector<Container> getMatosinhosRecyclingContainers(Graph &graph);
+
+vector<Container> getBoavistaWasteContainers(Graph &graph);
+vector<Container> getBoavistaRecyclingContainers(Graph &graph);
+
+vector<Container> getParanhosWasteContainers(Graph &graph);
+vector<Container> getParanhosRecyclingContainers(Graph &graph);
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H

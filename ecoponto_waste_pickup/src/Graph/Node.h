@@ -51,7 +51,7 @@ public:
     // ---- Edges getter, setter and adder
     const vector<Edge> &getEdges() const;
     void setEdges(const vector<Edge> &edges);
-    bool addNodeConnection(unsigned int destNodeId, const double & weight);
+    bool addNodeConnection(unsigned int destNodeId , const double & weight);
     unsigned int getNumEdges();
 
     // ---- Calculate the distance between this node and otherNode in a straight line
