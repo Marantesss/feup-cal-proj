@@ -5,12 +5,13 @@
 #include <string>
 
 struct Edge {
+    unsigned int edgeId;
     unsigned int destNodeId;
     double weight;
 
     // Constructors
     Edge();
-    Edge(unsigned int destNodeId, const double & weight);
+    Edge(unsigned int edgeId, unsigned int destNodeId, const double & weight);
 };
 
 

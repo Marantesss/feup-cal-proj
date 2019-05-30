@@ -28,6 +28,8 @@ nodeType getNodeType(std::string tag);
 
 GraphViewer* buildGraphViewer(Graph & graph);
 
+void append_containers(vector<Container> &v1, vector<Container> &v2);
+
 bool isMatosinhos(Node node);
 
 bool isBoavista(Node node);
@@ -38,19 +40,14 @@ bool isStartingNode(Node node);
 
 bool isFinalNode(Node node);
 
-vector<Container> getRecyclingContainers(unsigned int startingNode, Graph &graph);
-vector<Container> getWasteContainers(unsigned int startingNode, Graph &graph);
+void getContainers(unsigned int startingNode, Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
-vector<Container> getMyMapRecyclingContainers(unsigned int startingNode, Graph &graph);
-vector<Container> getMyMapWasteContainers(unsigned int startingNode, Graph &graph);
+void getMyMapContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
-vector<Container> getMatosinhosWasteContainers(unsigned int startingNode, Graph &graph);
-vector<Container> getMatosinhosRecyclingContainers(unsigned int startingNode, Graph &graph);
+void getBoavistaContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
-vector<Container> getBoavistaWasteContainers(unsigned int startingNode, Graph &graph);
-vector<Container> getBoavistaRecyclingContainers(unsigned int startingNode, Graph &graph);
+void getParanhosContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
-vector<Container> getParanhosWasteContainers(unsigned int startingNode, Graph &graph);
-vector<Container> getParanhosRecyclingContainers(unsigned int startingNode, Graph &graph);
+void getMatosinhosContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H

@@ -73,15 +73,24 @@ void Node::setEdges(const vector<Edge> &edges) {
     Node::edges = edges;
 }
 
-bool Node::addNodeConnection(unsigned int destNodeId, const double & weight) {
+bool Node::addNodeConnection(unsigned int edgeId, unsigned int destNodeId, const double & weight) {
     // if destNodeId already is connected to this node, we cant add it again
     if (getConnectionIndex(destNodeId) != -1){
         return false;
     }
 
     // Add the new node connection
-    edges.push_back( Edge(destNodeId, weight) );
+    edges.push_back( Edge(edgeId, destNodeId, weight) );
     return true;
+}
+
+unsigned int Node::getNodeConntected(unsigned int nodeId) {
+    for (Edge e : edges) {
+        if (e.destNodeId == nodeId)
+            return e.edgeId;
+    }
+
+    return -1;
 }
 
 double Node::getDistanceToNode(const Node otherNode) {
