@@ -17,15 +17,15 @@ int main() {
 
 
     Graph graph = Graph();
-    graph = parseMap("../maps/MyMap/MyMapNodes.txt", "../maps/MyMap/MyMapEdges.txt", "../maps/MyMap/MyMapTags.txt");
-    parseRandomTags(graph);
+    graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
+    //parseRandomTags(graph);
     GraphViewer* gv = buildGraphViewer(graph);
 
     //vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
-    vector<Container> recyclingContainers = getMyMapRecyclingContainers(graph);
+    //vector<Container> recyclingContainers = getMyMapRecyclingContainers(graph);
 
     cout << endl << "Porto Map loaded!" << endl;
-
+    /*
     NearestNeighbour nearestNeighbour(graph);
     vector<unsigned  int> path2 = nearestNeighbour.calculatePath(1, 900, recyclingContainers );
 
@@ -33,6 +33,7 @@ int main() {
         cout<<path2.at(j)<<"-->";
         gv->setVertexColor(path2.at(j), "red");
     }
+     */
 
     /*
     switch (getTruckMenuOption()) {
@@ -64,7 +65,7 @@ int main() {
     }
      */
 
-    /*
+
     DFS dfs = DFS(graph);
     NodeHashTable accessNodes = dfs.performSearch(BOAVISTA_PARKING_NODE_ID);
     NodeHashTable::iterator it;
@@ -79,30 +80,18 @@ int main() {
         }
     }
 
-    vector<Container>::iterator iter;
-
-    for (iter = wasteContainers.begin(); iter != wasteContainers.end(); ++iter) {
-        if (!dfs.isPossible(iter->getId(), BOAVISTA_WASTE_STATION_NODE_ID)) {
-            wasteContainers.erase(iter);
-            iter--;
-        }
-    }
-
     for (Node n : wasteContainers) {
         gv->setVertexColor(n.getId(), "yellow");
     }
-
-    if(dfs.isPossible(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID))
-        cout << "is possible" << endl;
 
     //Nearest Neighbour testing DOES NOT WORK SOMETIMES :( SAD LIFE
     NearestNeighbour nearestNeighbour(graph);
     vector<unsigned  int> path2 = nearestNeighbour.calculatePath(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID, wasteContainers );
     for(unsigned int j=0;j<path2.size();j++) {
         cout<<path2.at(j)<<"-->";
-        gv->setVertexColor(path2.at(j), "pink");
+        gv->setVertexColor(path2.at(j), "yellow");
     }
-     */
+
 
     gv->rearrange();
 
