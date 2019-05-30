@@ -11,13 +11,13 @@ private:
     double capacity;
 
 public:
-    Container();
+    Container(Node node);
 
-    Container(Node node, double maxCapacity, double capacity);
+    Container(Node node, double capacity);
 
     bool isValidPickup() const;
 
-    double getMaxCapacity() const;
+    double getMaxCapacity() ;
 
     void setMaxCapacity(double maxCapacity);
 
@@ -27,5 +27,16 @@ public:
 
 };
 
+struct ContainerHash {
+    bool operator()(const Node &d1, const Node &d2) const {
+        return d1 == d2;
+    }
+
+    unsigned int operator()(const Node &d) const {
+        return d.getId();
+    }
+};
+
+typedef unordered_set<Container, ContainerHash, ContainerHash> ContainerHashTable;
 
 #endif //ECOPONTO_WASTE_PICKUP_CONTAINER_H

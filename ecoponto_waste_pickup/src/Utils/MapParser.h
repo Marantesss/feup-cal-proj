@@ -9,6 +9,10 @@
 #include "defs.h"
 #include "GraphViewer/edgetype.h"
 #include "GraphViewer/graphviewer.h"
+#include "Graph/Container.h"
+#include <algorithm>
+#include <ctime>
+#include "Algorithms/DFS.h"
 
 Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
 
@@ -17,6 +21,8 @@ void parseNodes(std::ifstream & fileEdges, Graph &graph);
 void parseEdges(std::ifstream & fileEdges, Graph &graph);
 
 void parseTags(std::ifstream & fileTags, Graph &graph);
+
+void parseRandomTags(Graph &graph);
 
 nodeType getNodeType(std::string tag);
 
@@ -28,13 +34,23 @@ bool isBoavista(Node node);
 
 bool isParanhos(Node node);
 
-vector<unsigned int> getMatosinhosWasteContainers(Graph &graph);
-vector<unsigned int> getMatosinhosRecyclingContainers(Graph &graph);
+bool isStartingNode(Node node);
 
-vector<unsigned int> getBoavistaWasteContainers(Graph &graph);
-vector<unsigned int> getBoavistaRecyclingContainers(Graph &graph);
+bool isFinalNode(Node node);
 
-vector<unsigned int> getParanhosWasteContainers(Graph &graph);
-vector<unsigned int> getParanhosRecyclingContainers(Graph &graph);
+vector<Container> getRecyclingContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getWasteContainers(unsigned int startingNode, Graph &graph);
+
+vector<Container> getMyMapRecyclingContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getMyMapWasteContainers(unsigned int startingNode, Graph &graph);
+
+vector<Container> getMatosinhosWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getMatosinhosRecyclingContainers(unsigned int startingNode, Graph &graph);
+
+vector<Container> getBoavistaWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getBoavistaRecyclingContainers(unsigned int startingNode, Graph &graph);
+
+vector<Container> getParanhosWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getParanhosRecyclingContainers(unsigned int startingNode, Graph &graph);
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H

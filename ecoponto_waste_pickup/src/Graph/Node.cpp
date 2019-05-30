@@ -73,7 +73,7 @@ void Node::setEdges(const vector<Edge> &edges) {
     Node::edges = edges;
 }
 
-bool Node::addNodeConnection(unsigned int destNodeId , const double & weight) {
+bool Node::addNodeConnection(unsigned int destNodeId, const double & weight) {
     // if destNodeId already is connected to this node, we cant add it again
     if (getConnectionIndex(destNodeId) != -1){
         return false;
@@ -105,4 +105,5 @@ bool Node::operator==(const Node& d2) const{
 bool Node::operator!=(const Node& d2) const{
     return !(this->id == d2.id);
 }
+
 

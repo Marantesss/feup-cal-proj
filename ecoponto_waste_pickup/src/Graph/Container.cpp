@@ -1,15 +1,16 @@
 #include "Container.h"
 
-Container::Container() {
-
+Container::Container(Node node): Node(node) {
+    this->capacity = rand() % 101;
+    this->maxCapacity = CONTAINER_MAX_CAPACITY;
 }
 
-Container::Container(Node node, double maxCapacity, double capacity): Node(node) {
-    this->maxCapacity = maxCapacity;
+Container::Container(Node node, double capacity): Node(node) {
     this->capacity = capacity;
+    this->maxCapacity = CONTAINER_MAX_CAPACITY;
 }
 
-double Container::getMaxCapacity() const {
+double Container::getMaxCapacity() {
     return maxCapacity;
 }
 

@@ -1,11 +1,13 @@
 #include "Truck.h"
 
 Truck::Truck() {
-    this->capacity = DBL_MAX;
+    this->maxCapacity = TRUCK_MAX_CAPACITY;
+    this->capacity = 0;
     this->type = WASTE;
 }
 
 Truck::Truck(double capacity, truckType type) {
+    this->maxCapacity = TRUCK_MAX_CAPACITY;
     this->capacity = capacity;
     this->type = type;
 }
@@ -24,5 +26,21 @@ truckType Truck::getType() const {
 
 void Truck::setType(truckType type) {
     Truck::type = type;
+}
+
+double Truck::getMaxCapacity() const {
+    return maxCapacity;
+}
+
+void Truck::setMaxCapacity(double maxCapacity) {
+    Truck::maxCapacity = maxCapacity;
+}
+
+const vector<Container> &Truck::getContainers() const {
+    return containers;
+}
+
+void Truck::setContainers(const vector<Container> &containers) {
+    Truck::containers = containers;
 }
 

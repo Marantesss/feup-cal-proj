@@ -30,7 +30,10 @@ Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::st
     fileEdges.close();
 
     // ---- parsing tags
-    parseTags(fileTags, returnGraph);
+    if (file_path_tags == MYMAP_TAGS_MAP)
+        parseRandomTags(returnGraph);
+    else
+        parseTags(fileTags, returnGraph);
     fileTags.close();
 
     return returnGraph;
@@ -39,8 +42,6 @@ Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::st
 void parseNodes(std::ifstream & fileNodes, Graph &graph) {
     std::string currLine = "";
     getline(fileNodes, currLine);
-
-    u_int nodeCounter = 0;
 
     while(!fileNodes.eof()) {
         getline(fileNodes, currLine);
@@ -55,8 +56,6 @@ void parseNodes(std::ifstream & fileNodes, Graph &graph) {
         double node_y = stod(currLine.substr(0, currLine.find_first_of(")")));
 
         graph.addNode(nodeId, node_x, node_y);
-
-        nodeCounter++;
     }
 }
 
@@ -72,7 +71,9 @@ void parseEdges(std::ifstream & fileEdges, Graph &graph) {
         // ---- destination node
         unsigned int destNodeID = stoul(currLine.substr(1, currLine.find_first_of(")")));
 
+        // ---- bidirectional
         graph.addEdge(originNodeID, destNodeID);
+        graph.addEdge(destNodeID, originNodeID);
     }
 }
 
@@ -95,6 +96,29 @@ void parseTags(std::ifstream & fileTags, Graph &graph) {
             unsigned int nodeID = stoi(currLine);
             graph.getNode(nodeID).setType(type);
         }
+    }
+}
+
+void parseRandomTags(Graph &graph) {
+
+    // ---- generate random non repeating nodes
+    srand(time(0));
+
+    vector<unsigned int> randomNodeIDs;
+
+    for(int i = 2; i < 900; i++) {
+        randomNodeIDs.push_back(i);
+    }
+
+    random_shuffle(randomNodeIDs.begin(), randomNodeIDs.end());
+
+
+    for (int i = 0; i < 30; i++) {
+        graph.getNode(randomNodeIDs.at(i)).setType(RECYCLING_CONTAINER);
+    }
+
+    for (int i = 30; i < 60; i++) {
+        graph.getNode(randomNodeIDs.at(i)).setType(WASTE_DISPOSAL);
     }
 }
 
@@ -125,7 +149,7 @@ GraphViewer* buildGraphViewer(Graph & graph) {
 
     GraphViewer *gv = new GraphViewer(900, 900, false);
     gv->createWindow(900, 900);
-    gv->defineVertexColor("white");
+    gv->defineVertexColor("blue");
     gv->defineEdgeColor("black");
 
     double yPercent, xPercent;
@@ -166,27 +190,20 @@ GraphViewer* buildGraphViewer(Graph & graph) {
 
         gv->addNode(n.getId(), (int) (xPercent * 4000), (int) (yPercent * 2000));
 
-        if (isMatosinhos(n)) // Matosinhos
-            gv->setVertexColor(n.getId(), "blue");
-        else if (isParanhos(n)) // Paranhos
-            gv->setVertexColor(n.getId(), "blue");
-        else if (isBoavista(n)) // Boavista
-            gv->setVertexColor(n.getId(), "blue");
-
         switch (n.getType()) {
             case WASTE_DISPOSAL:
                 gv->setVertexColor(n.getId(), "orange");
-                //gv->setVertexLabel(n.getId(), "Waste Container");
                 break;
             case RECYCLING_CONTAINER:
                 gv->setVertexColor(n.getId(), "green");
-                gv->setVertexLabel(n.getId(), "Recycling Container");
-                break;
-            case RECYCLING_CENTRE:
-                gv->setVertexColor(n.getId(), "red");
-                gv->setVertexLabel(n.getId(), "Recycling Centre");
                 break;
         }
+
+        // ---- drawing starting and ending points
+        if (isStartingNode(n))
+            gv->setVertexColor(n.getId(), "cyan");
+        if (isFinalNode(n))
+            gv->setVertexColor(n.getId(), "red");
     }
 
 
@@ -242,74 +259,168 @@ bool isParanhos(Node node) {
     return true;
 }
 
-vector<unsigned int> getMatosinhosWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+bool isStartingNode(Node node) {
+    unsigned int id = node.getId();
+
+    return id == MATOSINHOS_PARKING_NODE_ID || id == BOAVISTA_PARKING_NODE_ID || id == PARANHOS_PARKING_NODE_ID || id == MYMAP_PARKING_NODE_ID;
+}
+
+bool isFinalNode(Node node) {
+    unsigned int id = node.getId();
+
+    return id == MATOSINHOS_WASTE_STATION_NODE_ID || id == BOAVISTA_WASTE_STATION_NODE_ID || id == PARANHOS_WASTE_STATION_NODE_ID || id == MYMAP_WASTE_STATION_NODE_ID;
+}
+
+vector<Container> getRecyclingContainers(unsigned int startingNode, Graph &graph) {
+
+    if (startingNode == MATOSINHOS_PARKING_NODE_ID)
+        return getMatosinhosRecyclingContainers(startingNode, graph);
+    else if (startingNode == BOAVISTA_PARKING_NODE_ID)
+        return getBoavistaRecyclingContainers(startingNode, graph);
+    else if (startingNode == PARANHOS_PARKING_NODE_ID)
+        return  getParanhosRecyclingContainers(startingNode, graph);
+    else if (startingNode == MYMAP_PARKING_NODE_ID)
+        return getMyMapRecyclingContainers(startingNode, graph);
+}
+
+vector<Container> getWasteContainers(unsigned int startingNode, Graph &graph) {
+
+    if (startingNode == MATOSINHOS_PARKING_NODE_ID)
+        return getMatosinhosWasteContainers(startingNode, graph);
+    else if (startingNode == BOAVISTA_PARKING_NODE_ID)
+        return getBoavistaWasteContainers(startingNode, graph);
+    else if (startingNode == PARANHOS_PARKING_NODE_ID)
+        return  getParanhosWasteContainers(startingNode, graph);
+    else if (startingNode == MYMAP_PARKING_NODE_ID)
+        return getMyMapWasteContainers(startingNode, graph);
+}
+
+vector<Container> getMyMapWasteContainers(unsigned int startingNode, Graph &graph) {
+
+    DFS dfs = DFS(graph);
+
+    vector<Container> wasteContainers;
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isMatosinhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getMatosinhosRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getMyMapRecyclingContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isMatosinhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getBoavistaWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getMatosinhosWasteContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isBoavista(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && isMatosinhos(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getBoavistaRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getMatosinhosRecyclingContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isBoavista(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && isMatosinhos(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
+    }
+
+    return wasteContainers;
+}
+
+vector<Container> getBoavistaWasteContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
+
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
+        Node n = graph.getNodeByIndex(i);
+        if (n.getType() == WASTE_DISPOSAL && isBoavista(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
+    }
+
+    return wasteContainers;
+}
+
+vector<Container> getBoavistaRecyclingContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
+
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
+        Node n = graph.getNodeByIndex(i);
+        if (n.getType() == RECYCLING_CONTAINER && isBoavista(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
     return wasteContainers;
 }
 
 
 
-vector<unsigned int> getParanhosWasteContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getParanhosWasteContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == WASTE_DISPOSAL && isParanhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == WASTE_DISPOSAL && isParanhos(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
 
     return wasteContainers;
 }
 
-vector<unsigned int> getParanhosRecyclingContainers(Graph &graph) {
-    vector<unsigned int> wasteContainers;
+vector<Container> getParanhosRecyclingContainers(unsigned int startingNode, Graph &graph) {
+    vector<Container> wasteContainers;
+    DFS dfs = DFS(graph);
 
     for (size_t i = 0; i < graph.getNumNodes(); i++) {
         Node n = graph.getNodeByIndex(i);
-        if (n.getType() == RECYCLING_CONTAINER && isParanhos(n))
-            wasteContainers.push_back(n.getId());
+        if (n.getType() == RECYCLING_CONTAINER && isParanhos(n) && dfs.isPossible(startingNode, n.getId())) {
+            Container newContainer = Container(n);
+            if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
     }
     return wasteContainers;
 }

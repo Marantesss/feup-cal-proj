@@ -5,27 +5,28 @@ NearestNeighbour::NearestNeighbour(const Graph &graph) : graph(graph), dfs(graph
 void NearestNeighbour::initDS() {
     visitOrder.clear();
     lastSolution.clear();
-    nodeHashTable.clear();
+    containerHashTable.clear();
 }
 
-void NearestNeighbour::verifyValidNodes(const vector<unsigned int> &pois) {
-    for (unsigned int id: pois) {
+void NearestNeighbour::verifyValidNodes(const vector<Container> &containers) {
+    for (Container container: containers) {
+        int id = container.getId();
         if (id != this->start.getId() && id != this->end.getId())
-            this->nodeHashTable.insert(this->graph.getNode(id));
+            this->containerHashTable.insert(container);
     }
 }
 
 void NearestNeighbour::addNodeVisitOrder(Node &node) {
     this->visitOrder.push_back(node.getId());
-    this->nodeHashTable.erase(node);
+    this->containerHashTable.erase(node);
 }
 
 void NearestNeighbour::removeNodeVisitOrder(Node &node) {
     this->visitOrder.pop_back();
-    this->nodeHashTable.insert(node);
+    this->containerHashTable.insert(node);
 }
 
-Node NearestNeighbour::getClosestNode(Node &node, const NodeHashTable otherNodes) {
+Node NearestNeighbour::getClosestNode(Node &node, const ContainerHashTable otherNodes) {
     Node closestNode = *otherNodes.begin();
     auto closestDistance = DBL_MAX;
     for (const Node &n:otherNodes) {
@@ -34,7 +35,6 @@ Node NearestNeighbour::getClosestNode(Node &node, const NodeHashTable otherNodes
             closestNode = n;
             closestDistance = aux;
         }
-
     }
     return closestNode;
 }
@@ -49,14 +49,13 @@ vector<unsigned int> NearestNeighbour::getVisitOrder() {
     return this->visitOrder;
 }
 
-vector<unsigned int>
-NearestNeighbour::calculatePath(unsigned int startId, unsigned int finishId, const vector<u_int> &pois) {
+vector<unsigned int> NearestNeighbour::calculatePath(unsigned int startId, unsigned int finishId, const vector<Container> &containers) {
     initDS();
     this->start = graph.getNode(startId);
     this->end = graph.getNode(finishId);
-    verifyValidNodes(pois);
+    verifyValidNodes(containers);
 
-    visitOrderSize = static_cast<unsigned int>(2 + nodeHashTable.size());
+    visitOrderSize = static_cast<unsigned int>(2 + containerHashTable.size());
     findBestVisitOrder(this->start, this->end);
 
     this->visitOrder.push_back((finishId));
@@ -73,10 +72,11 @@ NearestNeighbour::calculatePath(unsigned int startId, unsigned int finishId, con
 void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
     NodeHashTable reachableNodes = dfs.performSearch(start.getId());
 
-    if (reachableNodes.find(end) == reachableNodes.end())
+    if (reachableNodes.find(end) == reachableNodes.end()) {
         return;
+    }
 
-    for (Node n : nodeHashTable) {
+    for (Node n : containerHashTable) {
         if (reachableNodes.find(n) == reachableNodes.end())
             return;
     }
@@ -84,15 +84,15 @@ void NearestNeighbour::findBestVisitOrder(Node &start, Node &end) {
     addNodeVisitOrder(start);
 
     Node closestNode;
-    NodeHashTable poisToVisit = nodeHashTable;
+    ContainerHashTable containersToVisit = containerHashTable;
 
-    while (!poisToVisit.empty()) {
-        closestNode = getClosestNode(start, poisToVisit);
+    while (!containersToVisit.empty()) {
+        closestNode = getClosestNode(start, containersToVisit);
 
         findBestVisitOrder(closestNode, end);
 
-        if (visitOrder.size() != visitOrderSize - 1)
-            poisToVisit.erase(closestNode);
+        if (visitOrder.size() != visitOrderSize - 1) // -1 because of finalNode
+            containersToVisit.erase(closestNode);
         else
             return;
     }

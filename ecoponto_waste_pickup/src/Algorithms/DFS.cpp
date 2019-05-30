@@ -1,5 +1,8 @@
 #include "DFS.h"
 
+DFS::DFS(const Graph &graph) : GraphSearchAlgorithm(graph){}
+
+
 void DFS::visitNode(const Node &node) {
     if (!isVisited(node)) {
         nodeHashTable.insert(node);
@@ -22,8 +25,6 @@ bool DFS::visitNodeCondition(const Node &node, const Node &end) {
     }
     return false;
 }
-
-DFS::DFS(const Graph &graph) : GraphSearchAlgorithm(graph){}
 
 NodeHashTable DFS::performSearch(unsigned int start) {
     Node startNode;
