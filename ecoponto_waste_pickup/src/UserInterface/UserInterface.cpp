@@ -59,7 +59,7 @@ void showTruckMenu() {
     cout << "Please choose an option:" << endl;
     cout << "1 - Unlimited capacity truck" << endl;
     cout << "2 - Unlimited capacity recycling and waste trucks" << endl;
-    cout << "3 - Limited capacity recycling and waste trucks (1000 kg Max Capacity)" << endl;
+    cout << "3 - Limited capacity recycling and waste trucks (" << TRUCK_MAX_CAPACITY << " kg Max Capacity)" << endl;
     cout << "0 - Exit" << endl;
 }
 
@@ -73,7 +73,7 @@ void getUserTruckOptions(vector<Truck> &trucks, vector<Container> &wasteContaine
 
         switch(menuOption) {
             case 0: { // Unlimited capacity truck
-                return;
+                exit(NULL);
             }
             case 1: { // Unlimited capacity recycling and waste trucks
                 Truck truck = Truck();

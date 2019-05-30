@@ -28,8 +28,6 @@ nodeType getNodeType(std::string tag);
 
 GraphViewer* buildGraphViewer(Graph & graph);
 
-void append_vector(vector<unsigned int> &v1, vector<unsigned int> &v2);
-
 void append_containers(vector<Container> &v1, vector<Container> &v2);
 
 bool isMatosinhos(Node node);
@@ -51,7 +49,5 @@ void getBoavistaContainers(Graph &graph, vector<Container> &wasteContainers, vec
 void getParanhosContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
 
 void getMatosinhosContainers(Graph &graph, vector<Container> &wasteContainers, vector<Container> &recyclingContainers);
-
-
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H

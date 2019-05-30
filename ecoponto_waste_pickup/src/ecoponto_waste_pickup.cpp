@@ -10,6 +10,39 @@
 
 using namespace std;
 
+void printTruckInformation(vector<Truck> trucks) {
+    for (int i = 0; i < trucks.size(); i++) {
+        string wasteType;
+
+        switch (trucks.at(i).getType()) {
+            case WASTE:
+                wasteType = "regular waste";
+                break;
+            case RECYCLE:
+                wasteType = "recycle waste";
+                break;
+        }
+
+        cout << "Truck " << i+1 << ":\tWaste type: " << wasteType << "\tContainers in path: " << trucks.at(i).getContainers().size() << "\t Total trash collected: " << trucks.at(i).getCapacity() << endl;
+    }
+}
+
+void paintTruckPath(vector<Truck> trucks, GraphViewer* gv, Graph graph) {
+    for (Truck t : trucks) {
+        vector<unsigned  int> path = t.getPath();
+        if (path.size() != 0)
+            for(unsigned int i = 0; i < path.size() - 1; i++) {
+                if (t.getType() == WASTE) {
+                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
+                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), t.getPathColor());
+                } else if (t.getType() == RECYCLE) {
+                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
+                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), t.getPathColor());
+                }
+            }
+    }
+}
+
 int main() {
 
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
@@ -46,32 +79,19 @@ int main() {
 
     NearestNeighbour nearestNeighbour(graph);
 
-    /*
-    vector<unsigned  int> path = nearestNeighbour.calculatePath(startingNode, finalNode, wasteContainers);
-    */
+    cout << "CALculating path!" << endl;
 
     vector<Truck>::iterator it;
     for (it = trucks.begin(); it != trucks.end(); it++) {
         it->setPath(nearestNeighbour.calculatePath(startingNode, finalNode, it->getContainers()));
     }
-
-    cout << "Path calculated!" << endl;
+    cout << "Path CALculated!" << endl;
 
     GraphViewer* gv = buildGraphViewer(graph);
 
-    for (Truck t : trucks) {
-        vector<unsigned  int> path = t.getPath();
-        if (path.size() != 0)
-            for(unsigned int i = 0; i< path.size() - 1; i++) {
-                if (t.getType() == WASTE) {
-                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
-                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), "orange");
-                } else if (t.getType() == RECYCLE) {
-                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
-                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), "green");
-                }
-            }
-    }
+    paintTruckPath(trucks, gv, graph);
+
+    printTruckInformation(trucks);
 
     gv->rearrange();
 

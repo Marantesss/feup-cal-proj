@@ -23,7 +23,7 @@ private:
 public:
     Truck();
 
-    explicit Truck(truckType type, string color);
+    explicit Truck(truckType type);
 
     double getMaxCapacity() const;
 
