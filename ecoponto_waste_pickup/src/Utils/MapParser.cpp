@@ -1,4 +1,3 @@
-#include <algorithm>
 #include "MapParser.h"
 
 using namespace std;
@@ -101,6 +100,8 @@ void parseTags(std::ifstream & fileTags, Graph &graph) {
 void parseRandomTags(Graph &graph) {
 
     // ---- generate 30 random non repeating nodes
+
+    srand(time(0));
 
     vector<unsigned int> randomNodeIDs;
 
@@ -284,7 +285,7 @@ vector<Container> getMyMapRecyclingContainers(Graph &graph) {
         Node n = graph.getNodeByIndex(i);
         if (n.getType() == RECYCLING_CONTAINER) {
             Container newContainer = Container(n);
-            //if (newContainer.isValidPickup())
+            if (newContainer.isValidPickup())
                 wasteContainers.push_back(newContainer);
         }
     }

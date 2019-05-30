@@ -10,6 +10,8 @@
 #include "GraphViewer/edgetype.h"
 #include "GraphViewer/graphviewer.h"
 #include "Graph/Container.h"
+#include <algorithm>
+#include <ctime>
 
 Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
 
