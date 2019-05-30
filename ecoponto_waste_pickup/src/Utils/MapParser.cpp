@@ -30,9 +30,10 @@ Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::st
     fileEdges.close();
 
     // ---- parsing tags
+    /*
     parseTags(fileTags, returnGraph);
     fileTags.close();
-
+*/
     return returnGraph;
 }
 

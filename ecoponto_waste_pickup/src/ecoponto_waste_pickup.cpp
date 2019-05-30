@@ -16,7 +16,7 @@ int main() {
     cout << "Loading Porto Map...";
 
     Graph graph = Graph();
-    graph = parseMap("../maps/Porto/T02_nodes_X_Y_Porto.txt", "../maps/Porto/T02_edges_Porto.txt", "../maps/Porto/T02_tags_Porto.txt");
+    graph = parseMap("../maps/MyMap/MyMapNodes.txt", "../maps/MyMap/MyMapEdges.txt", "../maps/Porto/T02_tags_Porto.txt");
     GraphViewer* gv = buildGraphViewer(graph);
 
     //vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
@@ -53,16 +53,6 @@ int main() {
             break;
     }
      */
-    //Dijkstra testing
-    /*
-    Dijkstra dijkstra(graph);
-    vector<unsigned int> path = dijkstra.calcOptimalPath(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID);
-
-    for(unsigned int j=0;j<path.size();j++) {
-        cout<<path.at(j)<<"-->";
-        gv->setVertexColor(path.at(j), "pink");
-    }
-     */
 
     DFS dfs = DFS(graph);
     NodeHashTable accessNodes = dfs.performSearch(BOAVISTA_PARKING_NODE_ID);
@@ -70,12 +60,25 @@ int main() {
 
     vector<Container> wasteContainers;
 
-    for (it = accessNodes.begin(); it != accessNodes.end(); it++) {
-        if (it->getType() == RECYCLING_CONTAINER && isBoavista(*it)) {
-            Container newContainer = Container(*it);
-            if (newContainer.isValidPickup())
-                wasteContainers.push_back(newContainer);
+
+    for (Node n : accessNodes) {
+        gv->setVertexColor(n.getId(), "pink");
+        if (n.getType() == WASTE_DISPOSAL && isBoavista(n)) {
+            wasteContainers.push_back(n);
         }
+    }
+
+    vector<Container>::iterator iter;
+
+    for (iter = wasteContainers.begin(); iter != wasteContainers.end(); ++iter) {
+        if (!dfs.isPossible(iter->getId(), BOAVISTA_WASTE_STATION_NODE_ID)) {
+            wasteContainers.erase(iter);
+            iter--;
+        }
+    }
+
+    for (Node n : wasteContainers) {
+        gv->setVertexColor(n.getId(), "yellow");
     }
 
     if(dfs.isPossible(BOAVISTA_PARKING_NODE_ID, BOAVISTA_WASTE_STATION_NODE_ID))
