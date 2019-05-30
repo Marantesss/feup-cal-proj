@@ -12,6 +12,7 @@
 #include "Graph/Container.h"
 #include <algorithm>
 #include <ctime>
+#include "Algorithms/DFS.h"
 
 Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::string file_path_tags);
 
@@ -37,15 +38,19 @@ bool isStartingNode(Node node);
 
 bool isFinalNode(Node node);
 
-vector<Container> getMyMapRecyclingContainers(Graph &graph);
+vector<Container> getRecyclingContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getWasteContainers(unsigned int startingNode, Graph &graph);
 
-vector<Container> getMatosinhosWasteContainers(Graph &graph);
-vector<Container> getMatosinhosRecyclingContainers(Graph &graph);
+vector<Container> getMyMapRecyclingContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getMyMapWasteContainers(unsigned int startingNode, Graph &graph);
 
-vector<Container> getBoavistaWasteContainers(Graph &graph);
-vector<Container> getBoavistaRecyclingContainers(Graph &graph);
+vector<Container> getMatosinhosWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getMatosinhosRecyclingContainers(unsigned int startingNode, Graph &graph);
 
-vector<Container> getParanhosWasteContainers(Graph &graph);
-vector<Container> getParanhosRecyclingContainers(Graph &graph);
+vector<Container> getBoavistaWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getBoavistaRecyclingContainers(unsigned int startingNode, Graph &graph);
+
+vector<Container> getParanhosWasteContainers(unsigned int startingNode, Graph &graph);
+vector<Container> getParanhosRecyclingContainers(unsigned int startingNode, Graph &graph);
 
 #endif //ECOPONTO_WASTE_PICKUP_MAPPARSER_H
