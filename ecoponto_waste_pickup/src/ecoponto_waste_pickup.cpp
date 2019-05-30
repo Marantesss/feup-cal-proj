@@ -14,9 +14,10 @@ int main() {
 
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
 
+    // ---- MAP OPTIONS
     unsigned int startingNode, finalNode;
     string nodeMap, edgeMap, tagsMap;
-    getUserOptions(startingNode, finalNode, nodeMap, edgeMap, tagsMap);
+    getUserMapOptions(startingNode, finalNode, nodeMap, edgeMap, tagsMap);
 
     if (startingNode == 0 && finalNode == 0) {
         return 0;
@@ -38,28 +39,39 @@ int main() {
 
     cout << "Containers generated!" << endl;
 
-    cout << "Calculating path..." << endl;
+    // ---- TRUCK OPTIONS
+    vector<Truck> trucks;
+
+    getUserTruckOptions(trucks, wasteContainers, recyclingContainers);
 
     NearestNeighbour nearestNeighbour(graph);
-    vector<unsigned  int> path2 = nearestNeighbour.calculatePath(startingNode, finalNode, recyclingContainers);
+
+    /*
     vector<unsigned  int> path = nearestNeighbour.calculatePath(startingNode, finalNode, wasteContainers);
+    */
+
+    vector<Truck>::iterator it;
+    for (it = trucks.begin(); it != trucks.end(); it++) {
+        it->setPath(nearestNeighbour.calculatePath(startingNode, finalNode, it->getContainers()));
+    }
 
     cout << "Path calculated!" << endl;
 
     GraphViewer* gv = buildGraphViewer(graph);
 
-    append_vector(path, path2);
-
-    for (Container c : wasteContainers) {
-        gv->setVertexColor(c.getId(), "pink");
+    for (Truck t : trucks) {
+        vector<unsigned  int> path = t.getPath();
+        if (path.size() != 0)
+            for(unsigned int i = 0; i< path.size() - 1; i++) {
+                if (t.getType() == WASTE) {
+                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
+                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), "orange");
+                } else if (t.getType() == RECYCLE) {
+                    gv->setEdgeThickness(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), 10);
+                    gv->setEdgeColor(graph.getNode(path.at(i)).getNodeConntected(path.at(i + 1)), "green");
+                }
+            }
     }
-
-    if (path.size() != 0)
-        for(unsigned int j=0;j<path.size() - 1;j++) {
-            gv->setEdgeThickness(graph.getNode(path.at(j)).getNodeConntected(path.at(j+1)), 10);
-            gv->setEdgeColor(graph.getNode(path.at(j)).getNodeConntected(path.at(j+1)), "red");
-
-        }
 
     gv->rearrange();
 

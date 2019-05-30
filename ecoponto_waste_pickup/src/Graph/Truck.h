@@ -14,12 +14,16 @@ private:
 
     truckType type;
 
+    string pathColor;
+
     vector<Container> containers;
+
+    vector<unsigned int> path;
 
 public:
     Truck();
 
-    Truck(double capacity, truckType type);
+    explicit Truck(truckType type, string color);
 
     double getMaxCapacity() const;
 
@@ -36,6 +40,19 @@ public:
     const vector<Container> &getContainers() const;
 
     void setContainers(const vector<Container> &containers);
+
+    void addContainer(Container &container);
+
+    bool canAdd(Container &container);
+
+    const vector<unsigned int> &getPath() const;
+
+    void setPath(const vector<unsigned int> &path);
+
+    const string &getPathColor() const;
+
+    void setPathColor(const string &pathColor);
+
 };
 
 

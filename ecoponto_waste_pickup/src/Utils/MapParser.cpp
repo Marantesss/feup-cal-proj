@@ -229,6 +229,12 @@ void append_vector(vector<unsigned int> &v1, vector<unsigned int> &v2) {
     }
 }
 
+void append_containers(vector<Container> &v1, vector<Container> &v2) {
+    for (Container i :v2) {
+        v1.push_back(i);
+    }
+}
+
 bool isMatosinhos(Node node) {
 
 

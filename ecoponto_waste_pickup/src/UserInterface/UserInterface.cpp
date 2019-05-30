@@ -1,40 +1,6 @@
 #include "UserInterface.h"
-#include "Utils/defs.h"
 
 using namespace std;
-
-void showTruckMenu() {
-    cout << "Please choose an option:" << endl;
-    cout << "1 - Unlimited capacity trucks" << endl;
-    cout << "2 - Unlimited capacity recycling and waste trucks" << endl;
-    cout << "3 - Limited capacity recycling and waste trucks (1000 kg Max Capacity)" << endl;
-    cout << "0 - Exit" << endl;
-}
-
-int getTruckMenuOption() {
-
-    int menuOption;
-
-    do {
-        showTruckMenu();
-        cin >> menuOption;
-
-        switch(menuOption) {
-            case 0:
-                return 0;
-            case 1:
-                return 1;
-            case 2:
-                return 2;
-            case 3:
-                return 3;
-            default:
-                cout << "Invalid input" << endl;
-                break;
-        }
-
-    } while(1);
-}
 
 void showStartingPointMenu() {
     cout << "Please choose the truck parking lot location:" << endl;
@@ -45,7 +11,7 @@ void showStartingPointMenu() {
     cout << "0 - Exit" << endl;
 }
 
-void getUserOptions(unsigned int &startingPoint, unsigned int &finalPoint, string &nodeMap, string &edgeMap, string &tagsMap) {
+void getUserMapOptions(unsigned int &startingPoint, unsigned int &finalPoint, string &nodeMap, string &edgeMap, string &tagsMap) {
 
     int menuOption;
 
@@ -89,4 +55,85 @@ void getUserOptions(unsigned int &startingPoint, unsigned int &finalPoint, strin
     } while(1);
 }
 
+void showTruckMenu() {
+    cout << "Please choose an option:" << endl;
+    cout << "1 - Unlimited capacity truck" << endl;
+    cout << "2 - Unlimited capacity recycling and waste trucks" << endl;
+    cout << "3 - Limited capacity recycling and waste trucks (1000 kg Max Capacity)" << endl;
+    cout << "0 - Exit" << endl;
+}
+
+void getUserTruckOptions(vector<Truck> &trucks, vector<Container> &wasteContainers, vector<Container> &recyclingContainers) {
+
+    int menuOption;
+
+    do {
+        showTruckMenu();
+        cin >> menuOption;
+
+        switch(menuOption) {
+            case 0: { // Unlimited capacity truck
+                return;
+            }
+            case 1: { // Unlimited capacity recycling and waste trucks
+                Truck truck = Truck();
+                truck.setMaxCapacity(UINT_MAX);
+                append_containers(wasteContainers, recyclingContainers);
+                truck.setContainers(wasteContainers);
+                trucks.push_back(truck);
+                return;
+            }
+            case 2: { // Limited capacity recycling and waste trucks
+                Truck wasteTruck = Truck(WASTE);
+                wasteTruck.setMaxCapacity(UINT_MAX);
+                wasteTruck.setContainers(wasteContainers);
+                trucks.push_back(wasteTruck);
+                Truck recyclingTruck = Truck(RECYCLE);
+                recyclingTruck.setMaxCapacity(UINT_MAX);
+                recyclingTruck.setContainers(recyclingContainers);
+                trucks.push_back(recyclingTruck);
+                return;
+            }
+            case 3: {
+                allocateTruckContainers(trucks, wasteContainers, recyclingContainers);
+                return;
+            }
+            default:
+                cout << "Invalid input" << endl;
+                break;
+        }
+
+    } while(1);
+}
+
+void allocateTruckContainers(vector<Truck> &trucks, vector<Container> &wasteContainers, vector<Container> &recyclingContainers) {
+
+    while (!wasteContainers.empty()) {
+        Truck *truck = new Truck(WASTE);
+
+        vector<Container>::iterator it;
+        for (it = wasteContainers.begin(); it != wasteContainers.end(); it++) {
+            if (truck->canAdd(*it)) {
+                truck->addContainer(*it);
+                wasteContainers.erase(it);
+                it--;
+            }
+        }
+        trucks.push_back(*truck);
+    }
+
+    while (!recyclingContainers.empty()) {
+        Truck *truck = new Truck(RECYCLE);
+
+        vector<Container>::iterator it;
+        for (it = recyclingContainers.begin(); it != recyclingContainers.end(); it++) {
+            if (truck->canAdd(*it)) {
+                truck->addContainer(*it);
+                recyclingContainers.erase(it);
+                it--;
+            }
+        }
+        trucks.push_back(*truck);
+    }
+}
 
