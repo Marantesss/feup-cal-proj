@@ -15,14 +15,24 @@ int main() {
     cout << " ----- WELCOME TO ECOPONTO WASTE PICKUP ----- " << endl;
     cout << "Loading Porto Map...";
 
+
     Graph graph = Graph();
-    graph = parseMap("../maps/MyMap/MyMapNodes.txt", "../maps/MyMap/MyMapEdges.txt", "../maps/Porto/T02_tags_Porto.txt");
+    graph = parseMap("../maps/MyMap/MyMapNodes.txt", "../maps/MyMap/MyMapEdges.txt", "../maps/MyMap/MyMapTags.txt");
+    parseRandomTags(graph);
     GraphViewer* gv = buildGraphViewer(graph);
 
     //vector<unsigned int> wasteContainers = getBoavistaWasteContainers(graph);
-    vector<unsigned int> recyclingContainers;
+    vector<Container> recyclingContainers = getMyMapRecyclingContainers(graph);
 
     cout << endl << "Porto Map loaded!" << endl;
+
+    NearestNeighbour nearestNeighbour(graph);
+    vector<unsigned  int> path2 = nearestNeighbour.calculatePath(1, 900, recyclingContainers );
+
+    for(unsigned int j=0;j<path2.size();j++) {
+        cout<<path2.at(j)<<"-->";
+        gv->setVertexColor(path2.at(j), "red");
+    }
 
     /*
     switch (getTruckMenuOption()) {
@@ -54,6 +64,7 @@ int main() {
     }
      */
 
+    /*
     DFS dfs = DFS(graph);
     NodeHashTable accessNodes = dfs.performSearch(BOAVISTA_PARKING_NODE_ID);
     NodeHashTable::iterator it;
@@ -91,6 +102,7 @@ int main() {
         cout<<path2.at(j)<<"-->";
         gv->setVertexColor(path2.at(j), "pink");
     }
+     */
 
     gv->rearrange();
 

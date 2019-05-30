@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "MapParser.h"
 
 using namespace std;
@@ -30,10 +31,10 @@ Graph parseMap(std::string file_path_nodes, std::string file_path_edges, std::st
     fileEdges.close();
 
     // ---- parsing tags
-    /*
+
     parseTags(fileTags, returnGraph);
     fileTags.close();
-*/
+
     return returnGraph;
 }
 
@@ -69,7 +70,9 @@ void parseEdges(std::ifstream & fileEdges, Graph &graph) {
         // ---- destination node
         unsigned int destNodeID = stoul(currLine.substr(1, currLine.find_first_of(")")));
 
+        // ---- bidirecional
         graph.addEdge(originNodeID, destNodeID);
+        graph.addEdge(destNodeID, originNodeID);
     }
 }
 
@@ -93,6 +96,24 @@ void parseTags(std::ifstream & fileTags, Graph &graph) {
             graph.getNode(nodeID).setType(type);
         }
     }
+}
+
+void parseRandomTags(Graph &graph) {
+
+    // ---- generate 30 random non repeating nodes
+
+    vector<unsigned int> randomNodeIDs;
+
+    for(int i = 2; i < 900; i++) {
+        randomNodeIDs.push_back(i);
+    }
+
+    random_shuffle(randomNodeIDs.begin(), randomNodeIDs.end());
+
+    for (int i = 0; i < 30; i++) {
+        graph.getNode(randomNodeIDs.at(i)).setType(RECYCLING_CONTAINER);
+    }
+
 }
 
 nodeType getNodeType(std::string tag) {
@@ -254,6 +275,21 @@ bool isFinalNode(Node node) {
     unsigned int id = node.getId();
 
     return id == MATOSINHOS_WASTE_STATION_NODE_ID || id == BOAVISTA_WASTE_STATION_NODE_ID || id == PARANHOS_WASTE_STATION_NODE_ID;
+}
+
+vector<Container> getMyMapRecyclingContainers(Graph &graph) {
+    vector<Container> wasteContainers;
+
+    for (size_t i = 0; i < graph.getNumNodes(); i++) {
+        Node n = graph.getNodeByIndex(i);
+        if (n.getType() == RECYCLING_CONTAINER) {
+            Container newContainer = Container(n);
+            //if (newContainer.isValidPickup())
+                wasteContainers.push_back(newContainer);
+        }
+    }
+
+    return wasteContainers;
 }
 
 vector<Container> getMatosinhosWasteContainers(Graph &graph) {

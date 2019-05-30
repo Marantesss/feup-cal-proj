@@ -19,6 +19,8 @@ void parseEdges(std::ifstream & fileEdges, Graph &graph);
 
 void parseTags(std::ifstream & fileTags, Graph &graph);
 
+void parseRandomTags(Graph &graph);
+
 nodeType getNodeType(std::string tag);
 
 GraphViewer* buildGraphViewer(Graph & graph);
@@ -32,6 +34,8 @@ bool isParanhos(Node node);
 bool isStartingNode(Node node);
 
 bool isFinalNode(Node node);
+
+vector<Container> getMyMapRecyclingContainers(Graph &graph);
 
 vector<Container> getMatosinhosWasteContainers(Graph &graph);
 vector<Container> getMatosinhosRecyclingContainers(Graph &graph);
