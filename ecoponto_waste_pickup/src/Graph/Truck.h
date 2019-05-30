@@ -3,6 +3,7 @@
 
 #include <cfloat>
 #include "Utils/defs.h"
+#include "Container.h"
 
 class Truck {
 
@@ -12,6 +13,8 @@ private:
     double capacity;
 
     truckType type;
+
+    vector<Container> containers;
 
 public:
     Truck();
@@ -29,6 +32,10 @@ public:
     truckType getType() const;
 
     void setType(truckType type);
+
+    const vector<Container> &getContainers() const;
+
+    void setContainers(const vector<Container> &containers);
 };
 
 

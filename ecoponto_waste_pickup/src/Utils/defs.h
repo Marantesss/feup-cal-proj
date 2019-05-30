@@ -1,6 +1,14 @@
 #ifndef ECOPONTO_WASTE_PICKUP_DEFS_H
 #define ECOPONTO_WASTE_PICKUP_DEFS_H
 
+#define PORTO_NODE_MAP "../maps/Porto/T02_nodes_X_Y_Porto.txt"
+#define PORTO_EDGE_MAP "../maps/Porto/T02_edges_Porto.txt"
+#define PORTO_TAGS_MAP "../maps/Porto/T02_tags_Porto.txt"
+
+#define MYMAP_NODE_MAP "../maps/MyMap/MyMapNodes.txt"
+#define MYMAP_EDGE_MAP "../maps/MyMap/MyMapEdges.txt"
+#define MYMAP_TAGS_MAP "../maps/MyMap/MyMapTags.txt"
+
 #define MATOSINHOS_X 528028
 
 #define PARANHOS_X 533327
@@ -19,6 +27,9 @@
 
 #define BOAVISTA_PARKING_NODE_ID 428214906
 #define BOAVISTA_WASTE_STATION_NODE_ID 428214905
+
+#define MYMAP_PARKING_NODE_ID 1
+#define MYMAP_WASTE_STATION_NODE_ID 900
 
 #define TRUCK_MAX_CAPACITY 1000
 #define CONTAINER_MAX_CAPACITY 100

@@ -36,3 +36,11 @@ void Truck::setMaxCapacity(double maxCapacity) {
     Truck::maxCapacity = maxCapacity;
 }
 
+const vector<Container> &Truck::getContainers() const {
+    return containers;
+}
+
+void Truck::setContainers(const vector<Container> &containers) {
+    Truck::containers = containers;
+}
+
