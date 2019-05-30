@@ -8,7 +8,7 @@ using namespace std;
 class Graph {
 private:
     vector<Node> nodes;
-
+    unsigned int lastNodeId;
 public:
     // ---- constructor
     Graph();

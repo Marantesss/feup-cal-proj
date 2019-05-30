@@ -1,6 +1,8 @@
 #include "Graph.h"
 
-Graph::Graph() {}
+Graph::Graph() {
+    this->lastNodeId = 0;
+}
 
 // ---- Nodes
 unsigned int Graph::getNumNodes() const {
@@ -43,9 +45,9 @@ bool Graph::addEdge(unsigned int originNodeID, unsigned int destNodeID) {
     }
 
     double weight = getNode(originNodeID).getDistanceToNode(getNode(destNodeID));
-
+    this->lastNodeId++;
     // Add the node connections
-    return nodes.at(node1index).addNodeConnection(destNodeID, weight);
+    return nodes.at(node1index).addNodeConnection(lastNodeId, destNodeID, weight);
 }
 
 vector<Edge> Graph::getEdges(unsigned int id) {
