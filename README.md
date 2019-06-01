@@ -6,11 +6,12 @@ This repository contains the project completed in Conceção e Análise de Algor
 
 ### First Delivery
 
- * [First Report](https://docs.google.com/document/d/1voiREK4OZRiwK2Mv37w7Vdxw6exEbB-DH2XrVFoMn_E/edit)
+ * [First Report](https://github.com/Marantesss/feup-cal-proj/blob/master/first_delivery/CAL1819_2MIEIC02_B_2.pdf)
 
 ### Second Delivery
 
- * Nothing yet
+ * [Second Report](https://github.com/Marantesss/feup-cal-proj/blob/master/ecoponto_waste_pickup/CAL1819_2MIEIC02_B_2.pdf)
+ * [Source Code](https://github.com/Marantesss/feup-cal-proj/tree/master/ecoponto_waste_pickup/src)
 
 ## Course Information
 
